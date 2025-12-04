@@ -13,8 +13,7 @@ public class Course {
 
     private LocalDateTime updatedAt;
 
-    public Course() {
-    }
+    public Course() {}
 
     public Course(String title, Long creatorId) {
         this(0L, title, creatorId, LocalDateTime.now(), null);
@@ -42,12 +41,11 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", creatorId=" + creatorId +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
+        return "Course{" + "id="
+                + id + ", title='"
+                + title + '\'' + ", creatorId="
+                + creatorId + ", createdAt="
+                + createdAt + ", updatedAt="
+                + updatedAt + '}';
     }
 }

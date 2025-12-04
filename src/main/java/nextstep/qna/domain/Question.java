@@ -1,10 +1,9 @@
 package nextstep.qna.domain;
 
-import nextstep.users.domain.NsUser;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.users.domain.NsUser;
 
 public class Question {
     private Long id;
@@ -23,8 +22,7 @@ public class Question {
 
     private LocalDateTime updatedDate;
 
-    public Question() {
-    }
+    public Question() {}
 
     public Question(NsUser writer, String title, String contents) {
         this(0L, writer, title, contents);

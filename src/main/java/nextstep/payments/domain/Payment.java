@@ -16,8 +16,7 @@ public class Payment {
 
     private LocalDateTime createdAt;
 
-    public Payment() {
-    }
+    public Payment() {}
 
     public Payment(String id, Long sessionId, Long nsUserId, Long amount) {
         this.id = id;
