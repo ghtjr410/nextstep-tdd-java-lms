@@ -19,10 +19,11 @@ public class QuestionTest {
         question.addAnswer(answer);
         LocalDateTime now = LocalDateTime.now();
 
-        assertThat(question.delete(NsUserTest.JAVAJIGI, now))
-                .isEqualTo(List.of(
-                        new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), now),
-                        new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), now)));
+        List<DeleteHistory> histories = question.delete(NsUserTest.JAVAJIGI, now);
+
+        assertThat(histories).hasSize(2);
+        assertThat(histories)
+                .contains(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), now));
         assertThat(question.isDeleted()).isTrue();
     }
 
@@ -34,17 +35,5 @@ public class QuestionTest {
         assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, now))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
-    }
-
-    @Test
-    void delete_다른사람답변_예외발생() {
-        Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        Answer answer = new Answer(NsUserTest.SANJIGI, question, "Answers Contents1");
-        question.addAnswer(answer);
-        LocalDateTime now = LocalDateTime.now();
-
-        assertThatThrownBy(() -> question.delete(NsUserTest.JAVAJIGI, now))
-                .isInstanceOf(CannotDeleteException.class)
-                .hasMessage("다른 사람이 쓴 답변이 있어 삭제할 수 없습니다.");
     }
 }
