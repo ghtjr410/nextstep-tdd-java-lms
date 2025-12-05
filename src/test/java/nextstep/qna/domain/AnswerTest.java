@@ -22,4 +22,15 @@ public class AnswerTest {
                 .isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), now));
         assertThat(answer.isDeleted()).isTrue();
     }
+
+    @Test
+    void deleteHistory() {
+        Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
+        LocalDateTime fixedTime = LocalDateTime.of(2025, 1, 1, 10, 0);
+
+        DeleteHistory history = answer.deleteHistory(fixedTime);
+
+        assertThat(history)
+                .isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), fixedTime));
+    }
 }
