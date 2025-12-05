@@ -17,6 +17,10 @@ public class Answers {
         this.values = inputs;
     }
 
+    public void add(Answer answer) {
+        this.values.add(answer);
+    }
+
     public List<DeleteHistory> deleteAll(LocalDateTime now) {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
 
