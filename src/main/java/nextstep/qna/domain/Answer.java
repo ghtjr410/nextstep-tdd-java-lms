@@ -5,9 +5,7 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer {
-    private Long id;
-
+public class Answer extends BaseEntity {
     private NsUser writer;
 
     private Question question;
@@ -16,10 +14,6 @@ public class Answer {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
     public Answer() {}
 
     public Answer(NsUser writer, Question question, String contents) {
@@ -27,7 +21,7 @@ public class Answer {
     }
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
-        this.id = id;
+        super(id);
         if (writer == null) {
             throw new UnAuthorizedException();
         }
@@ -43,11 +37,7 @@ public class Answer {
 
     public DeleteHistory delete(LocalDateTime now) {
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, this.id, this.writer, now);
-    }
-
-    public Long getId() {
-        return id;
+        return new DeleteHistory(ContentType.ANSWER, getId(), this.writer, now);
     }
 
     public boolean isDeleted() {

@@ -6,9 +6,7 @@ import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question {
-    private Long id;
-
+public class Question extends BaseEntity {
     private String title;
 
     private String contents;
@@ -19,10 +17,6 @@ public class Question {
 
     private boolean deleted = false;
 
-    private LocalDateTime createdDate = LocalDateTime.now();
-
-    private LocalDateTime updatedDate;
-
     public Question() {}
 
     public Question(NsUser writer, String title, String contents) {
@@ -30,7 +24,7 @@ public class Question {
     }
 
     public Question(Long id, NsUser writer, String title, String contents) {
-        this.id = id;
+        super(id);
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -42,7 +36,7 @@ public class Question {
         this.deleted = true;
 
         List<DeleteHistory> deleteHistories = new ArrayList<>();
-        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, this.id, this.writer, now));
+        deleteHistories.add(new DeleteHistory(ContentType.QUESTION, getId(), this.writer, now));
         deleteHistories.addAll(answers.deleteAll(now));
 
         return deleteHistories;
@@ -54,10 +48,6 @@ public class Question {
         }
 
         answers.validateDeletable(loginUser);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public NsUser getWriter() {
