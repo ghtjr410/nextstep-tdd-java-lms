@@ -31,6 +31,14 @@ public class Answers {
         return deleteHistories;
     }
 
+    public List<DeleteHistory> deleteHistories(LocalDateTime deletedAt) {
+        List<DeleteHistory> histories = new ArrayList<>();
+        for (Answer answer : this.values) {
+            histories.add(answer.deleteHistory(deletedAt));
+        }
+        return histories;
+    }
+
     public void validateDeletable(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.values) {
             if (!answer.isOwner(loginUser)) {
