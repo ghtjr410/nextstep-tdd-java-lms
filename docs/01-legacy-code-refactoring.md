@@ -2,7 +2,7 @@
 ***
 ## 코드 리뷰
 > PR 링크:
-> 
+> **[https://github.com/next-step/java-lms/pull/801](https://github.com/next-step/java-lms/pull/801)**
 ## 나의 학습 목표
 - TDD 사이클로 구현
 - 객체지향 생활 체조 원칙 준수
@@ -32,3 +32,59 @@
 - 도메인 모델에 setter 메서드 추가하지 않는다.
 ## PR 전 점검
 **[체크리스트 확인하기](checklist.md)**
+## 구현 기능 목록
+### 도메인 모델 리팩터링
+#### Answer
+- [x] 삭제 상태 변경 (`delete()`)
+- [x] 삭제 이력 생성 (`deleteHistory(LocalDateTime)`)
+- [x] 소유자 확인 (`isOwner(NsUser)`)
+
+#### Answers (일급 컬렉션)
+- [x] 답변 추가 (`add(Answer)`)
+- [x] 전체 답변 삭제 (`deleteAll()`)
+- [x] 전체 답변 삭제 이력 생성 (`deleteHistories(LocalDateTime)`)
+- [x] 삭제 가능 여부 검증 (`validateDeletable(NsUser)`)
+    - 다른 사람이 쓴 답변이 있으면 예외 발생
+
+#### Question
+- [x] 삭제 (`delete(NsUser)`)
+    - 소유자 검증
+    - 답변 삭제 가능 여부 검증
+    - 질문 삭제 상태 변경
+    - 답변 삭제 상태 변경
+- [x] 삭제 이력 생성 (`deleteHistories(LocalDateTime)`)
+    - 질문 삭제 이력 생성
+    - 답변 삭제 이력 생성
+- [x] 답변 추가 (`addAnswer(Answer)`)
+
+#### BaseEntity
+- [x] 공통 필드 추출 (id, createdDate, updatedDate)
+
+#### QuestionContent (VO)
+- [x] 질문 내용 필드 추출 (title, contents)
+
+### Service 리팩터링
+
+#### QnAService
+- [x] 삭제 로직을 도메인으로 위임
+- [x] 삭제와 이력 생성 분리
+    - `question.delete(loginUser)`
+    - `question.deleteHistories(now)`
+
+### 테스트
+
+#### AnswerTest
+- [x] `delete()` - 삭제 시 상태 변경
+- [x] `deleteHistory()` - 삭제 이력 생성
+
+#### AnswersTest
+- [x] `validateDeletable_소유자일치()` - 검증 통과
+- [x] `validateDeletable_소유자불일치_예외발생()` - 예외 발생
+
+#### QuestionTest
+- [x] `delete_성공()` - 질문 삭제 상태 변경
+- [x] `delete_소유자불일치_예외발생()` - 예외 발생
+- [x] `deleteHistories()` - 삭제 이력 생성
+
+#### QnaServiceTest
+- [x] 기존 테스트 모두 통과
