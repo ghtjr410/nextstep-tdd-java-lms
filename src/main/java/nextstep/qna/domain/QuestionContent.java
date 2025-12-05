@@ -9,6 +9,14 @@ public class QuestionContent {
         this.contents = contents;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
     @Override
     public String toString() {
         return "QuestionContent{" + "title='" + title + '\'' + ", contents='" + contents + '\'' + '}';

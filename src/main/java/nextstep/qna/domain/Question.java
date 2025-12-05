@@ -27,6 +27,11 @@ public class Question extends BaseEntity {
         this.content = new QuestionContent(title, contents);
     }
 
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        answers.add(answer);
+    }
+
     public List<DeleteHistory> delete(NsUser loginUser, LocalDateTime now) throws CannotDeleteException {
         validateDeletable(loginUser);
 
@@ -47,21 +52,16 @@ public class Question extends BaseEntity {
         answers.validateDeletable(loginUser);
     }
 
-    public NsUser getWriter() {
-        return writer;
-    }
-
-    public void addAnswer(Answer answer) {
-        answer.toQuestion(this);
-        answers.add(answer);
-    }
-
     private boolean isOwner(NsUser loginUser) {
         return writer.equals(loginUser);
     }
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public NsUser getWriter() {
+        return writer;
     }
 
     @Override

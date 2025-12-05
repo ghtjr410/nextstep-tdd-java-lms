@@ -35,6 +35,10 @@ public class Answer extends BaseEntity {
         this.contents = contents;
     }
 
+    public void toQuestion(Question question) {
+        this.question = question;
+    }
+
     public DeleteHistory delete(LocalDateTime now) {
         this.deleted = true;
         return new DeleteHistory(ContentType.ANSWER, getId(), this.writer, now);
@@ -50,10 +54,6 @@ public class Answer extends BaseEntity {
 
     public NsUser getWriter() {
         return writer;
-    }
-
-    public void toQuestion(Question question) {
-        this.question = question;
     }
 
     @Override
