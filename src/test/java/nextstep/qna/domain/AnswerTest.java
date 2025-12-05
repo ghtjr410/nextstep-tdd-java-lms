@@ -16,10 +16,9 @@ public class AnswerTest {
     @Test
     void delete() {
         Answer answer = new Answer(NsUserTest.JAVAJIGI, QuestionTest.Q1, "Answers Contents1");
-        LocalDateTime now = LocalDateTime.now();
 
-        assertThat(answer.delete(now))
-                .isEqualTo(new DeleteHistory(ContentType.ANSWER, answer.getId(), answer.getWriter(), now));
+        answer.delete();
+
         assertThat(answer.isDeleted()).isTrue();
     }
 

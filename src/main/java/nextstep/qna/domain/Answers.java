@@ -21,14 +21,10 @@ public class Answers {
         this.values.add(answer);
     }
 
-    public List<DeleteHistory> deleteAll(LocalDateTime now) {
-        List<DeleteHistory> deleteHistories = new ArrayList<>();
-
+    public void deleteAll() {
         for (Answer answer : this.values) {
-            deleteHistories.add(answer.delete(now));
+            answer.delete();
         }
-
-        return deleteHistories;
     }
 
     public List<DeleteHistory> deleteHistories(LocalDateTime deletedAt) {

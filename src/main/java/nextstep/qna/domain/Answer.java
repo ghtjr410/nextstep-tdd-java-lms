@@ -39,9 +39,8 @@ public class Answer extends BaseEntity {
         this.question = question;
     }
 
-    public DeleteHistory delete(LocalDateTime now) {
+    public void delete() {
         this.deleted = true;
-        return new DeleteHistory(ContentType.ANSWER, getId(), this.writer, now);
     }
 
     public DeleteHistory deleteHistory(LocalDateTime deletedDate) {

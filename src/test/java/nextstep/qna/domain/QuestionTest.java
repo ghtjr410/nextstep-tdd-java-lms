@@ -17,22 +17,17 @@ public class QuestionTest {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         question.addAnswer(answer);
-        LocalDateTime now = LocalDateTime.now();
 
-        List<DeleteHistory> histories = question.delete(NsUserTest.JAVAJIGI, now);
+        question.delete(NsUserTest.JAVAJIGI);
 
-        assertThat(histories).hasSize(2);
-        assertThat(histories)
-                .contains(new DeleteHistory(ContentType.QUESTION, question.getId(), question.getWriter(), now));
         assertThat(question.isDeleted()).isTrue();
     }
 
     @Test
     void delete_소유자불일치_예외발생() {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
-        LocalDateTime now = LocalDateTime.now();
 
-        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI, now))
+        assertThatThrownBy(() -> question.delete(NsUserTest.SANJIGI))
                 .isInstanceOf(CannotDeleteException.class)
                 .hasMessage("질문을 삭제할 권한이 없습니다.");
     }
