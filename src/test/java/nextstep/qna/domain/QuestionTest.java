@@ -13,7 +13,7 @@ public class QuestionTest {
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
 
     @Test
-    void delete_성공() throws CannotDeleteException {
+    void delete_소유자일치_성공() throws CannotDeleteException {
         Question question = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
         Answer answer = new Answer(NsUserTest.JAVAJIGI, question, "Answers Contents1");
         question.addAnswer(answer);
