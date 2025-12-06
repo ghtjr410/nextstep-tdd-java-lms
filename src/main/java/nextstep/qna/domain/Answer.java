@@ -60,10 +60,6 @@ public class Answer extends DeletableBaseEntity {
 
     @Override
     public String toString() {
-        return "Answer{" + super.toString()
-                + "writer="
-                + writer + ", question="
-                + question + ", contents='"
-                + contents + '\'' + '}';
+        return "Answer{" + super.toString() + ", writer=" + writer + ", contents='" + contents + '\'' + '}';
     }
 }

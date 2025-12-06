@@ -28,6 +28,6 @@ public abstract class DeletableBaseEntity {
 
     @Override
     public String toString() {
-        return "id=" + id + ", deleted=" + deleted + '}';
+        return "id=" + id + ", deleted=" + deleted;
     }
 }

@@ -36,7 +36,7 @@ public class Question extends DeletableBaseEntity {
         }
 
         delete();
-        answers.deleteAll();
+        answers.deleteAll(loginUser);
     }
 
     public List<DeleteHistory> deleteHistories(LocalDateTime deletedAt) {

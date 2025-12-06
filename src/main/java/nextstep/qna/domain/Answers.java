@@ -3,6 +3,8 @@ package nextstep.qna.domain;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import nextstep.qna.CannotDeleteException;
+import nextstep.users.domain.NsUser;
 
 public class Answers {
     private final List<Answer> values;
@@ -19,9 +21,9 @@ public class Answers {
         this.values.add(answer);
     }
 
-    public void deleteAll() {
+    public void deleteAll(NsUser loginUser) throws CannotDeleteException {
         for (Answer answer : this.values) {
-            answer.delete();
+            answer.delete(loginUser);
         }
     }
 
