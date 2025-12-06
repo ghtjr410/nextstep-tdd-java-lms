@@ -1,4 +1,11 @@
-# 학습 관리 시스템(Learning Management System)
+# NextStep TDD Java LMS(Learning Management System)
+## 학습 관리 시스템
+본 저장소는 TDD 학습을 위한 단계별 과제를 포함합니다.
+## 단계별 문서
+- **[1단계 - 레거시 코드 리팩터링](./docs/01-legacy-code-refactoring.md)**
+- **[2단계 - 수강신청(도메인 모델)]()**
+- **[3단계 - 수강신청(DB 신청)]()**
+- **[4단계 - 수강신청(요구사항 변경)]()**
 ## 진행 방법
 * 학습 관리 시스템의 수강신청 요구사항을 파악한다.
 * 요구사항에 대한 구현을 완료한 후 자신의 github 아이디에 해당하는 브랜치에 Pull Request(이하 PR)를 통해 코드 리뷰 요청을 한다.

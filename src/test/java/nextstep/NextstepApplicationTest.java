@@ -6,6 +6,5 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class NextstepApplicationTest {
     @Test
-    void contextLoads() {
-    }
+    void contextLoads() {}
 }
