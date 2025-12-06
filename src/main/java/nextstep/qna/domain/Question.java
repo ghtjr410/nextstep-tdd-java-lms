@@ -31,7 +31,9 @@ public class Question extends DeletableBaseEntity {
     }
 
     public void delete(NsUser loginUser) throws CannotDeleteException {
-        validateDeletable(loginUser);
+        if (!isOwner(loginUser)) {
+            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
+        }
 
         delete();
         answers.deleteAll();
@@ -42,14 +44,6 @@ public class Question extends DeletableBaseEntity {
         histories.add(new DeleteHistory(ContentType.QUESTION, getId(), this.writer, deletedAt));
         histories.addAll(answers.deleteHistories(deletedAt));
         return histories;
-    }
-
-    private void validateDeletable(NsUser loginUser) throws CannotDeleteException {
-        if (!isOwner(loginUser)) {
-            throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
-        }
-
-        answers.validateDeletable(loginUser);
     }
 
     private boolean isOwner(NsUser loginUser) {
