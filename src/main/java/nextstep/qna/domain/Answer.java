@@ -5,14 +5,12 @@ import nextstep.qna.NotFoundException;
 import nextstep.qna.UnAuthorizedException;
 import nextstep.users.domain.NsUser;
 
-public class Answer extends BaseEntity {
+public class Answer extends DeletableBaseEntity {
     private NsUser writer;
 
     private Question question;
 
     private String contents;
-
-    private boolean deleted = false;
 
     public Answer() {}
 
@@ -39,16 +37,8 @@ public class Answer extends BaseEntity {
         this.question = question;
     }
 
-    public void delete() {
-        this.deleted = true;
-    }
-
     public DeleteHistory deleteHistory(LocalDateTime deletedDate) {
         return new DeleteHistory(ContentType.ANSWER, getId(), this.writer, deletedDate);
-    }
-
-    public boolean isDeleted() {
-        return deleted;
     }
 
     public boolean isOwner(NsUser writer) {
@@ -61,6 +51,10 @@ public class Answer extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
+        return "Answer{" + super.toString()
+                + "writer="
+                + writer + ", question="
+                + question + ", contents='"
+                + contents + '\'' + '}';
     }
 }

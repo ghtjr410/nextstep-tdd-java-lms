@@ -6,14 +6,12 @@ import java.util.List;
 import nextstep.qna.CannotDeleteException;
 import nextstep.users.domain.NsUser;
 
-public class Question extends BaseEntity {
+public class Question extends DeletableBaseEntity {
     private NsUser writer;
 
     private final Answers answers = new Answers();
 
     private QuestionContent content;
-
-    private boolean deleted = false;
 
     public Question() {}
 
@@ -35,7 +33,7 @@ public class Question extends BaseEntity {
     public void delete(NsUser loginUser) throws CannotDeleteException {
         validateDeletable(loginUser);
 
-        this.deleted = true;
+        delete();
         answers.deleteAll();
     }
 
@@ -58,20 +56,16 @@ public class Question extends BaseEntity {
         return writer.equals(loginUser);
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
     public NsUser getWriter() {
         return writer;
     }
 
     @Override
     public String toString() {
-        return "Question{" + "content="
-                + content + ", writer="
-                + writer + ", answers="
-                + answers + ", deleted="
-                + deleted + '}';
+        return "Question{" + super.toString()
+                + ", writer="
+                + writer + ", content="
+                + content + ", deleted="
+                + isDeleted() + '}';
     }
 }
