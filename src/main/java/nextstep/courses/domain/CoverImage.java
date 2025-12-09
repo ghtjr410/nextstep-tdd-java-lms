@@ -4,6 +4,8 @@ public class CoverImage {
     private static final long MAX_FILE_SIZE = 1024 * 1024;
     private static final int MIN_WIDTH = 300;
     private static final int MIN_HEIGHT = 200;
+    private static final int WIDTH_RATIO = 3;
+    private static final int HEIGHT_RATIO = 2;
 
     private String filename;
     private long fileSize;
@@ -14,6 +16,7 @@ public class CoverImage {
     public CoverImage(String filename, long fileSize, ImageType imageType, int width, int height) {
         validateFileSize(fileSize);
         validateDimension(width, height);
+        validateAspectRatio(width, height);
         this.filename = filename;
         this.fileSize = fileSize;
         this.imageType = imageType;
@@ -32,6 +35,12 @@ public class CoverImage {
         }
         if (height < MIN_HEIGHT) {
             throw new IllegalArgumentException(String.format("이미지 높이는 %d픽셀 이상이어야 합니다. (입력: %d)", MIN_HEIGHT, height));
+        }
+    }
+
+    private void validateAspectRatio(int width, int height) {
+        if (width * HEIGHT_RATIO != height * WIDTH_RATIO) {
+            throw new IllegalArgumentException(String.format("이미지 비율은 3:2여야 합니다. (입력: %d:%d)", width, height));
         }
     }
 }

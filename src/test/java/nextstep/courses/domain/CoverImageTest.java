@@ -36,4 +36,11 @@ class CoverImageTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("높이는 200픽셀 이상");
     }
+
+    @Test
+    void 생성_비율불일치_예외발생() {
+        assertThatThrownBy(() -> new CoverImage("image.png", 1024, ImageType.PNG, 300, 300))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("비율은 3:2");
+    }
 }
