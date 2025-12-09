@@ -22,4 +22,18 @@ class CoverImageTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("이미지 크기는 1MB 이하여야 합니다.");
     }
+
+    @Test
+    void 생성_너비부족_예외발생() {
+        assertThatThrownBy(() -> new CoverImage("image.png", 1024, ImageType.PNG, 299, 200))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("너비는 300픽셀 이상");
+    }
+
+    @Test
+    void 생성_높이부족_예외발생() {
+        assertThatThrownBy(() -> new CoverImage("image.png", 1024, ImageType.PNG, 300, 199))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("높이는 200픽셀 이상");
+    }
 }
