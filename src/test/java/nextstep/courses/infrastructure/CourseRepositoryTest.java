@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import nextstep.courses.domain.Course;
 import nextstep.courses.domain.CourseRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,11 +29,15 @@ public class CourseRepositoryTest {
 
     @Test
     void crud() {
-        Course course = new Course("TDD, 클린 코드 with Java", 1L);
+        LocalDateTime fixednow = LocalDateTime.now();
+        Course course = new Course("TDD, 클린 코드 with Java", 1, 1L, fixednow);
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
+        assertThat(course.getGeneration()).isEqualTo(savedCourse.getGeneration());
+        assertThat(course.getCreatorId()).isEqualTo(savedCourse.getCreatorId());
+        assertThat(course.getCreatedAt()).isEqualTo(savedCourse.getCreatedAt());
         LOGGER.debug("Course: {}", savedCourse);
     }
 }
