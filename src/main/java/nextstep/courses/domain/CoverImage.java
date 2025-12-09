@@ -13,6 +13,10 @@ public class CoverImage {
     private int width;
     private int height;
 
+    public CoverImage(String filename, long fileSize, int width, int height) {
+        this(filename, fileSize, ImageType.from(extractExtension(filename)), width, height);
+    }
+
     public CoverImage(String filename, long fileSize, ImageType imageType, int width, int height) {
         validateFileSize(fileSize);
         validateDimension(width, height);
@@ -22,6 +26,14 @@ public class CoverImage {
         this.imageType = imageType;
         this.width = width;
         this.height = height;
+    }
+
+    private static String extractExtension(String filename) {
+        int dotIndex = filename.lastIndexOf('.');
+        if (dotIndex == -1 || dotIndex == filename.length() - 1) {
+            throw new IllegalArgumentException("파일 확장자가 없습니다. (입력: " + filename + ")");
+        }
+        return filename.substring(dotIndex + 1);
     }
 
     private void validateFileSize(long fileSize) {

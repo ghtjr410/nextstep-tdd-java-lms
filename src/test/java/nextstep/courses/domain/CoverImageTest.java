@@ -24,6 +24,13 @@ class CoverImageTest {
     }
 
     @Test
+    void 생성_확장자없음_예외발생() {
+        assertThatThrownBy(() -> new CoverImage("image", 1024, 300, 200))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("파일 확장자가 없습니다");
+    }
+
+    @Test
     void 생성_너비부족_예외발생() {
         assertThatThrownBy(() -> new CoverImage("image.png", 1024, ImageType.PNG, 299, 200))
                 .isInstanceOf(IllegalArgumentException.class)
