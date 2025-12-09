@@ -11,11 +11,14 @@ import org.junit.jupiter.api.Test;
 class PaidSessionTest {
     @Test
     void 생성자_정상입력_생성성공() {
+        // given
         CoverImage coverImage = new CoverImage("image.png", 1024, 300, 200);
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
         Money fee = new Money(50000);
 
-        assertThatCode(() -> new PaidSession(coverImage, period, 30, fee)).doesNotThrowAnyException();
+        PaidSession session = new PaidSession(coverImage, period, 30, fee);
+
+        assertThat(session.getStatus()).isEqualTo(SessionStatus.PREPARING);
     }
 
     @Test
