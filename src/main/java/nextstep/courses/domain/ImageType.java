@@ -7,9 +7,10 @@ public enum ImageType {
     SVG;
 
     public static ImageType from(String extension) {
-        if (extension.equals("jpeg")) {
+        String upper = extension.toUpperCase();
+        if (upper.equals("JPEG")) {
             return JPG;
         }
-        return valueOf(extension);
+        return valueOf(upper);
     }
 }
