@@ -43,24 +43,30 @@
 - [x] 강의 추가
 - [x] 강의 개수 조회
 
-#### Session (추상 클래스, 템플릿 메서드 패턴 적용)
-- [x] 수강 신청 – 템플릿 메서드 방식
-  - [x] `final` enroll(enrollment, payment) 정의 
+#### Session
+- [x] 수강 신청
   - [x] 모집중 상태 검증
-  - [x] 결제 정책 검증 – 하위에서 구현 (validatePaymentPolicy)
-  - [x] 정원 정책 검증 – 하위에서 구현 (validateCapacityPolicy)
+  - [x] Policy에 검증 위임
 - [x] 수강 인원 조회
+- [x] 강의 타입 조회 (Policy에서 반환)
 
-#### FreeSession
-- [x] Session 상속
-- [x] 수강 신청
-  - [x] 결제 정책 없음 → validatePaymentPolicy(): 빈 구현
-  - [x] 정원 정책 없음 → validateCapacityPolicy(): 빈 구현
-#### PaidSession
-- [x] Session 상속
-- [x] 수강 신청
-  - [x] 결제 금액 검증
-  - [x] 수강 인원 검증
+#### EnrollmentPolicy (추상 클래스, 템플릿 메서드 패턴)
+- [x] final validate(payment, currentCount) - 알고리즘 순서 강제
+- [x] 결제 검증 (validatePayment) - 하위에서 구현
+- [x] 정원 검증 (validateCapacity) - 하위에서 구현
+- [x] 강의 타입 반환 (getType) - 하위에서 구현
+
+#### FreeEnrollmentPolicy
+- [x] EnrollmentPolicy 상속
+- [x] 결제 검증: 빈 구현 (무료)
+- [x] 정원 검증: 빈 구현 (제한 없음)
+- [x] 타입 반환: FREE
+
+#### PaidEnrollmentPolicy
+- [x] EnrollmentPolicy 상속
+- [x] 결제 금액 검증 (수강료 일치)
+- [x] 수강 인원 검증 (정원 초과)
+- [x] 타입 반환: PAID
 
 #### Enrollments (일급 컬렉션)
 - [x] 수강 신청 추가
