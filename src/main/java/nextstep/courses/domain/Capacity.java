@@ -1,0 +1,12 @@
+package nextstep.courses.domain;
+
+public class Capacity {
+    private final int value;
+
+    public Capacity(int value) {
+        if (value <= 0) {
+            throw new IllegalArgumentException(String.format("최대 수강 인원은 1명 이상이어야 합니다. (입력: %d)", value));
+        }
+        this.value = value;
+    }
+}
