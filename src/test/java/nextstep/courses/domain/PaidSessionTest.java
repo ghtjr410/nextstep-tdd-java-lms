@@ -60,4 +60,17 @@ class PaidSessionTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("결제 금액이 수강료와 일치하지 않습니다");
     }
+
+    @Test
+    void enroll_인원초과_예외발생() {
+        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 2, fee);
+        Money payment = new Money(50000);
+
+        session.enroll(new Enrollment(1L, 1L, LocalDateTime.now()), payment);
+        session.enroll(new Enrollment(2L, 2L, LocalDateTime.now()), payment);
+
+        assertThatThrownBy(() -> session.enroll(new Enrollment(3L, 3L, LocalDateTime.now()), payment))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("수강 인원이 초과");
+    }
 }
