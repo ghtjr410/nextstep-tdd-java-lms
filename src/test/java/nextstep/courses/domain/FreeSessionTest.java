@@ -25,9 +25,7 @@ class FreeSessionTest {
 
     @Test
     void 생성자_정상입력_생성성공() {
-        FreeSession session = new FreeSession(coverImage, period);
-
-        assertThat(session.getStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(new FreeSession(coverImage, period).getStatus()).isEqualTo(SessionStatus.PREPARING);
     }
 
     @Test

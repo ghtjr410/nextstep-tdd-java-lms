@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PaidSessionTest {
@@ -23,16 +25,15 @@ class PaidSessionTest {
 
     @Test
     void 생성자_정상입력_생성성공() {
-        assertThatCode(() -> new PaidSession(coverImage, period, 30, 50000)).doesNotThrowAnyException();
+        assertThat(new PaidSession(coverImage, period, 30, 50000).getStatus()).isEqualTo(SessionStatus.PREPARING);
     }
 
     @Test
     void enroll_정상입력_성공() {
         PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 3, 50000);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
-        Money payment = new Money(50000);
 
-        session.enroll(enrollment, payment);
+        session.enroll(enrollment, new Money(50000));
 
         assertThat(session.enrollmentCount()).isEqualTo(1);
     }
@@ -59,5 +60,19 @@ class PaidSessionTest {
         assertThatThrownBy(() -> session.enroll(new Enrollment(3L, 3L, LocalDateTime.now()), payment))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("수강 인원이 초과");
+    }
+
+    @ParameterizedTest(name = "상태:{0}")
+    @EnumSource(
+            value = SessionStatus.class,
+            names = {"PREPARING", "CLOSED"})
+    void enroll_모집중이아닐시_예외발생(SessionStatus status) {
+        PaidSession session = new PaidSession(coverImage, period, status, 2, 50000);
+
+        Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
+
+        assertThatThrownBy(() -> session.enroll(enrollment, Money.ZERO))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("모집중인 강의만");
     }
 }
