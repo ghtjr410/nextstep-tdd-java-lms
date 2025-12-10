@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class SessionTest {
@@ -28,8 +30,21 @@ class SessionTest {
     }
 
     @Test
-    void enroll_준비중_예외발생() {
-        Session session = new FreeSession(coverImage, period);
+    void enroll_모집중_성공() {
+        Session session = new FreeSession(coverImage, period, SessionStatus.RECRUITING);
+        Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
+
+        session.enroll(enrollment);
+
+        assertThat(session.enrollmentCount()).isEqualTo(1);
+    }
+
+    @ParameterizedTest(name = "상태:{0}")
+    @EnumSource(
+            value = SessionStatus.class,
+            names = {"PREPARING", "CLOSED"})
+    void enroll_모집중이아닐시_예외발생(SessionStatus status) {
+        Session session = new FreeSession(coverImage, period, status);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
         assertThatThrownBy(() -> session.enroll(enrollment))

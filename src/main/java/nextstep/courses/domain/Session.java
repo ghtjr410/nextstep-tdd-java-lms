@@ -11,6 +11,10 @@ public abstract class Session {
         this(0L, coverImage, period, SessionStatus.PREPARING, new Enrollments());
     }
 
+    public Session(CoverImage coverImage, SessionPeriod period, SessionStatus status) {
+        this(0L, coverImage, period, status, new Enrollments());
+    }
+
     public Session(
             Long id, CoverImage coverImage, SessionPeriod period, SessionStatus status, Enrollments enrollments) {
         this.id = id;
@@ -29,6 +33,10 @@ public abstract class Session {
         if (!status.canEnroll()) {
             throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", status));
         }
+    }
+
+    public int enrollmentCount() {
+        return enrollments.count();
     }
 
     public SessionStatus getStatus() {
