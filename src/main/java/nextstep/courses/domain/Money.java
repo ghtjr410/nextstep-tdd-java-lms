@@ -1,6 +1,8 @@
 package nextstep.courses.domain;
 
 public class Money {
+    public static final Money ZERO = new Money(0);
+
     private final int amount;
 
     public Money(int amount) {

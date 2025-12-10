@@ -34,7 +34,7 @@ class SessionTest {
         Session session = new FreeSession(coverImage, period, SessionStatus.RECRUITING);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
-        session.enroll(enrollment);
+        session.enroll(enrollment, Money.ZERO);
 
         assertThat(session.enrollmentCount()).isEqualTo(1);
     }
@@ -47,7 +47,7 @@ class SessionTest {
         Session session = new FreeSession(coverImage, period, status);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
-        assertThatThrownBy(() -> session.enroll(enrollment))
+        assertThatThrownBy(() -> session.enroll(enrollment, Money.ZERO))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("모집중인 강의만");
     }

@@ -8,4 +8,10 @@ public class FreeSession extends Session {
     public FreeSession(CoverImage coverImage, SessionPeriod period, SessionStatus status) {
         super(coverImage, period, status);
     }
+
+    @Override
+    protected void validatePaymentPolicy(Money payment) {}
+
+    @Override
+    protected void validateCapacityPolicy() {}
 }

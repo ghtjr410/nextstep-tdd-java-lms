@@ -24,8 +24,10 @@ public abstract class Session {
         this.enrollments = enrollments;
     }
 
-    public void enroll(Enrollment enrollment) {
+    public final void enroll(Enrollment enrollment, Money payment) {
         validateStatus();
+        validatePaymentPolicy(payment);
+        validateCapacityPolicy();
         enrollments.add(enrollment);
     }
 
@@ -34,6 +36,10 @@ public abstract class Session {
             throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", status));
         }
     }
+
+    protected abstract void validatePaymentPolicy(Money payment);
+
+    protected abstract void validateCapacityPolicy();
 
     public int enrollmentCount() {
         return enrollments.count();

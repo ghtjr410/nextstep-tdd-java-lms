@@ -19,19 +19,15 @@ public class PaidSession extends Session {
         this.price = price;
     }
 
-    public void enroll(Enrollment enrollment, Money payment) {
-        validatePayment(payment);
-        validateCapacity();
-        super.enroll(enrollment);
-    }
-
-    private void validatePayment(Money payment) {
+    @Override
+    protected void validatePaymentPolicy(Money payment) {
         if (!price.isSameAs(payment)) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }
 
-    private void validateCapacity() {
+    @Override
+    protected void validateCapacityPolicy() {
         if (this.capacity.isOver(enrollmentCount())) {
             throw new IllegalStateException(String.format("수강 인원이 초과되었습니다. (최대: %d명)", capacity.getValue()));
         }
