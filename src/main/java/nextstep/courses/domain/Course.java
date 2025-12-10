@@ -11,9 +11,9 @@ public class Course {
 
     private final Sessions sessions;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
+    private final LocalDateTime updatedAt;
 
     public Course(String title, Long creatorId, LocalDateTime now) {
         this(0L, title, creatorId, new Sessions(), now, null);

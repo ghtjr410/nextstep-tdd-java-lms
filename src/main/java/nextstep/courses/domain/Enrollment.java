@@ -3,10 +3,10 @@ package nextstep.courses.domain;
 import java.time.LocalDateTime;
 
 public class Enrollment {
-    private Long id;
-    private Long sessionId;
-    private Long studentId;
-    private LocalDateTime createdAt;
+    private final Long id;
+    private final Long sessionId;
+    private final Long studentId;
+    private final LocalDateTime createdAt;
 
     public Enrollment(Long sessionId, Long studentId, LocalDateTime now) {
         this(0L, sessionId, studentId, now);
