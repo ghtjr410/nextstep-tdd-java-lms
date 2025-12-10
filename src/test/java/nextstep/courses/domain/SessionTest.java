@@ -12,8 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class FreeSessionTest {
-
+class SessionTest {
     private CoverImage coverImage;
     private SessionPeriod period;
 
@@ -25,12 +24,15 @@ class FreeSessionTest {
 
     @Test
     void 생성자_정상입력_생성성공() {
-        assertThat(new FreeSession(coverImage, period).getStatus()).isEqualTo(SessionStatus.PREPARING);
+        Session session = new Session(coverImage, period, new FreeEnrollmentPolicy());
+
+        assertThat(session.getStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(session.getType()).isEqualTo(SessionType.FREE);
     }
 
     @Test
     void enroll_모집중_성공() {
-        Session session = new FreeSession(coverImage, period, SessionStatus.RECRUITING);
+        Session session = new Session(coverImage, period, SessionStatus.RECRUITING, new FreeEnrollmentPolicy());
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
         session.enroll(enrollment, Money.ZERO);
@@ -43,7 +45,7 @@ class FreeSessionTest {
             value = SessionStatus.class,
             names = {"PREPARING", "CLOSED"})
     void enroll_모집중이아닐시_예외발생(SessionStatus status) {
-        FreeSession session = new FreeSession(coverImage, period, status);
+        Session session = new Session(coverImage, period, status, new FreeEnrollmentPolicy());
 
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
