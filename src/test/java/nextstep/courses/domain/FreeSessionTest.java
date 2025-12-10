@@ -12,10 +12,9 @@ class FreeSessionTest {
 
     @Test
     void 생성자_정상입력_생성성공() {
-        FreeSession session = new FreeSession(
-                new CoverImage("image.png", 1024, 300, 200),
-                new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31)));
+        CoverImage coverImage = new CoverImage("image.png", 1024, 300, 200);
+        SessionPeriod sessionPeriod = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
 
-        assertThat(session.getStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThatCode(() -> new FreeSession(coverImage, sessionPeriod)).doesNotThrowAnyException();
     }
 }

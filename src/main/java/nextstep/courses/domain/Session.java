@@ -25,11 +25,11 @@ public abstract class Session {
     }
 
     public void enroll(Enrollment enrollment) {
-        validateEnrollment();
+        validateStatus();
         enrollments.add(enrollment);
     }
 
-    protected void validateEnrollment() {
+    protected void validateStatus() {
         if (!status.canEnroll()) {
             throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", status));
         }
