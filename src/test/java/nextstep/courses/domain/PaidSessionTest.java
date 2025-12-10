@@ -14,34 +14,21 @@ class PaidSessionTest {
 
     private CoverImage coverImage;
     private SessionPeriod period;
-    private Money fee;
 
     @BeforeEach
     void setUp() {
         coverImage = new CoverImage("image.png", 1024, 300, 200);
         period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        fee = new Money(50000);
     }
 
     @Test
     void 생성자_정상입력_생성성공() {
-        assertThatCode(() -> new PaidSession(coverImage, period, 30, fee)).doesNotThrowAnyException();
-    }
-
-    @Test
-    void 생성자_최대인원0명_예외발생() {
-        CoverImage coverImage = new CoverImage("image.png", 1024, 300, 200);
-        SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Money fee = new Money(50000);
-
-        assertThatThrownBy(() -> new PaidSession(coverImage, period, 0, fee))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("최대 수강 인원은 1명 이상");
+        assertThatCode(() -> new PaidSession(coverImage, period, 30, 50000)).doesNotThrowAnyException();
     }
 
     @Test
     void enroll_정상입력_성공() {
-        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 3, fee);
+        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 3, 50000);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
         Money payment = new Money(50000);
 
@@ -52,7 +39,7 @@ class PaidSessionTest {
 
     @Test
     void enroll_결제금액불일치_예외발생() {
-        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 3, fee);
+        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 3, 50000);
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
         Money wrongPayment = new Money(30000);
 
@@ -63,7 +50,7 @@ class PaidSessionTest {
 
     @Test
     void enroll_인원초과_예외발생() {
-        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 2, fee);
+        PaidSession session = new PaidSession(coverImage, period, SessionStatus.RECRUITING, 2, 50000);
         Money payment = new Money(50000);
 
         session.enroll(new Enrollment(1L, 1L, LocalDateTime.now()), payment);

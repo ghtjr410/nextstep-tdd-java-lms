@@ -13,4 +13,8 @@ public class Capacity {
     public boolean isOver(int currentCount) {
         return currentCount >= value;
     }
+
+    public int getValue() {
+        return this.value;
+    }
 }
