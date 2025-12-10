@@ -1,22 +1,21 @@
 package nextstep.courses.domain;
 
 public class PaidSession extends Session {
-    private final int maxEnrollment;
-    private final Money fee;
+    private final int capacity;
+    private final Money price;
 
-    public PaidSession(CoverImage coverImage, SessionPeriod period, int maxEnrollment, Money fee) {
+    public PaidSession(CoverImage coverImage, SessionPeriod period, int capacity, Money price) {
         super(coverImage, period);
-        validateMaxEnrollment(maxEnrollment);
-        this.maxEnrollment = maxEnrollment;
-        this.fee = fee;
+        validateMaxEnrollment(capacity);
+        this.capacity = capacity;
+        this.price = price;
     }
 
-    public PaidSession(
-            CoverImage coverImage, SessionPeriod period, SessionStatus status, int maxEnrollment, Money fee) {
+    public PaidSession(CoverImage coverImage, SessionPeriod period, SessionStatus status, int capacity, Money price) {
         super(coverImage, period, status);
-        validateMaxEnrollment(maxEnrollment);
-        this.maxEnrollment = maxEnrollment;
-        this.fee = fee;
+        validateMaxEnrollment(capacity);
+        this.capacity = capacity;
+        this.price = price;
     }
 
     private void validateMaxEnrollment(int maxEnrollment) {
@@ -32,14 +31,14 @@ public class PaidSession extends Session {
     }
 
     private void validatePayment(Money payment) {
-        if (!fee.isSameAs(payment)) {
+        if (!price.isSameAs(payment)) {
             throw new IllegalArgumentException("결제 금액이 수강료와 일치하지 않습니다.");
         }
     }
 
     private void validateCapacity() {
-        if (enrollmentCount() >= maxEnrollment) {
-            throw new IllegalStateException(String.format("수강 인원이 초과되었습니다. (최대: %d명)", maxEnrollment));
+        if (enrollmentCount() >= capacity) {
+            throw new IllegalStateException(String.format("수강 인원이 초과되었습니다. (최대: %d명)", capacity));
         }
     }
 }
