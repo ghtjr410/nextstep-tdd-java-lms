@@ -18,4 +18,8 @@ public class Enrollment {
         this.studentId = studentId;
         this.createdAt = createdAt;
     }
+
+    public Long getStudentId() {
+        return studentId;
+    }
 }
