@@ -30,12 +30,11 @@ public class CourseRepositoryTest {
     @Test
     void crud() {
         LocalDateTime fixednow = LocalDateTime.now();
-        Course course = new Course("TDD, 클린 코드 with Java", 1, 1L, fixednow);
+        Course course = new Course("TDD, 클린 코드 with Java", 1L, fixednow);
         int count = courseRepository.save(course);
         assertThat(count).isEqualTo(1);
         Course savedCourse = courseRepository.findById(1L);
         assertThat(course.getTitle()).isEqualTo(savedCourse.getTitle());
-        assertThat(course.getGeneration()).isEqualTo(savedCourse.getGeneration());
         assertThat(course.getCreatorId()).isEqualTo(savedCourse.getCreatorId());
         assertThat(course.getCreatedAt()).isEqualTo(savedCourse.getCreatedAt());
         LOGGER.debug("Course: {}", savedCourse);

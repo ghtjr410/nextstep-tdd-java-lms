@@ -7,8 +7,6 @@ public class Course {
 
     private String title;
 
-    private int generation;
-
     private Long creatorId;
 
     private LocalDateTime createdAt;
@@ -17,19 +15,17 @@ public class Course {
 
     public Course() {}
 
-    public Course(String title, int generation, Long creatorId, LocalDateTime now) {
-        this(0L, title, generation, creatorId, now, null);
+    public Course(String title, Long creatorId, LocalDateTime now) {
+        this(0L, title, creatorId, now, null);
     }
 
-    public Course(String title, int generation, Long creatorId) {
-        this(0L, title, generation, creatorId, LocalDateTime.now(), null);
+    public Course(String title, Long creatorId) {
+        this(0L, title, creatorId, LocalDateTime.now(), null);
     }
 
-    public Course(
-            Long id, String title, int generation, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Course(Long id, String title, Long creatorId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
-        this.generation = generation;
         this.creatorId = creatorId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -41,10 +37,6 @@ public class Course {
 
     public Long getCreatorId() {
         return creatorId;
-    }
-
-    public int getGeneration() {
-        return generation;
     }
 
     public LocalDateTime getCreatedAt() {

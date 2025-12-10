@@ -13,6 +13,6 @@ class CourseTest {
     @Test
     void 생성자_정상입력_생성성공() {
         LocalDateTime fixedNow = LocalDateTime.now();
-        assertThatCode(() -> new Course("과정명", 1, 1L, fixedNow)).doesNotThrowAnyException();
+        assertThatCode(() -> new Course("과정명", 1L, fixedNow)).doesNotThrowAnyException();
     }
 }
