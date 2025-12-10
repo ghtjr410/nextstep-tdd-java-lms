@@ -34,6 +34,14 @@ public class Course {
         this.updatedAt = updatedAt;
     }
 
+    public void addSession(Session session) {
+        sessions.add(session);
+    }
+
+    public int sessionCount() {
+        return sessions.count();
+    }
+
     public String getTitle() {
         return title;
     }

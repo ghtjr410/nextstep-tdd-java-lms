@@ -11,7 +11,7 @@ public class Sessions {
     }
 
     public Sessions(List<Session> values) {
-        this.values = values;
+        this.values = new ArrayList<>(values);
     }
 
     public void add(Session session) {

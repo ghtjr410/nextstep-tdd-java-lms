@@ -14,6 +14,7 @@ public class PaidSession extends Session {
     public PaidSession(
             CoverImage coverImage, SessionPeriod period, SessionStatus status, int maxEnrollment, Money fee) {
         super(coverImage, period, status);
+        validateMaxEnrollment(maxEnrollment);
         this.maxEnrollment = maxEnrollment;
         this.fee = fee;
     }
