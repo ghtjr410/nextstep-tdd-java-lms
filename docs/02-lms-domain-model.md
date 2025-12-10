@@ -43,22 +43,29 @@
 - [x] 강의 추가
 - [x] 강의 개수 조회
 
-#### Session (abstract)
-- [x] 수강 신청
+#### Session (추상 클래스, 템플릿 메서드 패턴 적용)
+- [x] 수강 신청 – 템플릿 메서드 방식
+  - [x] `final` enroll(enrollment, payment) 정의 
   - [x] 모집중 상태 검증
+  - [x] 결제 정책 검증 – 하위에서 구현 (validatePaymentPolicy)
+  - [x] 정원 정책 검증 – 하위에서 구현 (validateCapacityPolicy)
 - [x] 수강 인원 조회
 
 #### FreeSession
 - [x] Session 상속
+- [x] 수강 신청
+  - [x] 결제 정책 없음 → validatePaymentPolicy(): 빈 구현
+  - [x] 정원 정책 없음 → validateCapacityPolicy(): 빈 구현
 #### PaidSession
+- [x] Session 상속
 - [x] 수강 신청
   - [x] 결제 금액 검증
   - [x] 수강 인원 검증
-  - [x] 부모 수강 신청 호출
 
 #### Enrollments (일급 컬렉션)
 - [x] 수강 신청 추가
 - [x] 수강 인원 조회
+- [x] 중복 수강 신청 검증
 
 #### CoverImage (VO)
 - [x] 이미지 파일 정보와 크기 정보 조합 생성
