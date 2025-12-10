@@ -5,20 +5,30 @@ public abstract class Session {
     private CoverImage coverImage;
     private SessionPeriod period;
     private SessionStatus status;
+    private final Enrollments enrollments;
 
     public Session(CoverImage coverImage, SessionPeriod period) {
-        this(0L, coverImage, period, SessionStatus.PREPARING);
+        this(0L, coverImage, period, SessionStatus.PREPARING, new Enrollments());
     }
 
-    public Session(Long id, CoverImage coverImage, SessionPeriod period, SessionStatus status) {
+    public Session(
+            Long id, CoverImage coverImage, SessionPeriod period, SessionStatus status, Enrollments enrollments) {
         this.id = id;
         this.coverImage = coverImage;
         this.period = period;
         this.status = status;
+        this.enrollments = enrollments;
     }
 
-    public boolean canEnroll() {
-        return this.status.canEnroll();
+    public void enroll(Enrollment enrollment) {
+        validateEnrollment();
+        enrollments.add(enrollment);
+    }
+
+    protected void validateEnrollment() {
+        if (!status.canEnroll()) {
+            throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", status));
+        }
     }
 
     public SessionStatus getStatus() {
