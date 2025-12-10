@@ -28,7 +28,6 @@ class CapacityTest {
     void isOver_정원초과여부_확인(int capacityValue, int currentCount, boolean expected) {
         boolean result = new Capacity(capacityValue).isOver(currentCount);
 
-        // then
         assertThat(result).isEqualTo(expected);
     }
 }

@@ -1,10 +1,10 @@
 package nextstep.courses.domain;
 
 public abstract class Session {
-    private Long id;
-    private CoverImage coverImage;
-    private SessionPeriod period;
-    private SessionStatus status;
+    private final Long id;
+    private final CoverImage coverImage;
+    private final SessionPeriod period;
+    private final SessionStatus status;
     private final Enrollments enrollments;
 
     public Session(CoverImage coverImage, SessionPeriod period) {
