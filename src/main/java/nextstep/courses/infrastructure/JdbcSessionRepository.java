@@ -27,8 +27,8 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
-    public Long save(Session session, Long courseId) {
-        Long sessionId = insertSession(session, courseId);
+    public Long save(Session session) {
+        Long sessionId = insertSession(session);
 
         if (session.getCoverImage() != null) {
             insertCoverImage(session.getCoverImage(), sessionId);
@@ -37,7 +37,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return sessionId;
     }
 
-    private long insertSession(Session session, Long courseId) {
+    private long insertSession(Session session) {
         final Integer maxEnrollment;
         final Integer price;
 
@@ -57,7 +57,7 @@ public class JdbcSessionRepository implements SessionRepository {
         jdbcTemplate.update(
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
-                    ps.setLong(1, courseId);
+                    ps.setLong(1, session.getCourseId());
                     ps.setString(2, session.getType().name());
                     ps.setString(3, session.getStatus().name());
                     ps.setDate(4, Date.valueOf(session.getStartDate()));
@@ -118,7 +118,8 @@ public class JdbcSessionRepository implements SessionRepository {
             Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
             return new Session(
-                    rs.getLong("id"),
+                    sessionId,
+                    rs.getLong("course_id"),
                     coverImage,
                     new SessionPeriod(
                             rs.getDate("start_date").toLocalDate(),

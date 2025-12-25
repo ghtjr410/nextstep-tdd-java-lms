@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SessionRepository {
-    Long save(Session session, Long courseId);
+    Long save(Session session);
 
     void saveEnrollment(Enrollment enrollment);
 

@@ -47,8 +47,8 @@ class SessionServiceTest {
     void 수강신청_성공() {
         // given
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Session session = new Session(null, period, SessionStatus.RECRUITING, new PaidEnrollmentPolicy(30, 50000));
-        Long sessionId = sessionRepository.save(session, 1L);
+        Session session = new Session(1L, null, period, SessionStatus.RECRUITING, new PaidEnrollmentPolicy(30, 50000));
+        Long sessionId = sessionRepository.save(session);
         Payment payment = new Payment("1", sessionId, 1L, 50000L);
 
         // when

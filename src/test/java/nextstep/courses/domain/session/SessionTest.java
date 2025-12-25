@@ -27,7 +27,7 @@ class SessionTest {
 
     @Test
     void 생성자_정상입력_생성성공() {
-        Session session = new Session(coverImage, period, new FreeEnrollmentPolicy());
+        Session session = new Session(1L, coverImage, period, new FreeEnrollmentPolicy());
 
         assertThat(session.getStatus()).isEqualTo(SessionStatus.PREPARING);
         assertThat(session.getType()).isEqualTo(SessionType.FREE);
@@ -35,7 +35,7 @@ class SessionTest {
 
     @Test
     void enroll_모집중_성공() {
-        Session session = new Session(coverImage, period, SessionStatus.RECRUITING, new FreeEnrollmentPolicy());
+        Session session = new Session(1L, coverImage, period, SessionStatus.RECRUITING, new FreeEnrollmentPolicy());
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
         session.enroll(enrollment, Money.ZERO);
@@ -48,7 +48,7 @@ class SessionTest {
             value = SessionStatus.class,
             names = {"PREPARING", "CLOSED"})
     void enroll_모집중이아닐시_예외발생(SessionStatus status) {
-        Session session = new Session(coverImage, period, status, new FreeEnrollmentPolicy());
+        Session session = new Session(1L, coverImage, period, status, new FreeEnrollmentPolicy());
 
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 

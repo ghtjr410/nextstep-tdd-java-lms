@@ -42,9 +42,9 @@ class SessionRepositoryTest {
     void 커버이미지포함_저장_후_조회() {
         CoverImage coverImage = new CoverImage("image.png", 1024, 300, 200);
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Session session = new Session(coverImage, period, new FreeEnrollmentPolicy());
+        Session session = new Session(1L, coverImage, period, new FreeEnrollmentPolicy());
 
-        Long sessionId = sessionRepository.save(session, 1L);
+        Long sessionId = sessionRepository.save(session);
         Session found = sessionRepository.findById(sessionId).get();
 
         assertThat(found.getCoverImage()).isNotNull();
@@ -54,9 +54,9 @@ class SessionRepositoryTest {
     @Test
     void 무료강의_저장_후_조회() {
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Session session = new Session(null, period, new FreeEnrollmentPolicy());
+        Session session = new Session(1L, null, period, new FreeEnrollmentPolicy());
 
-        Long sessionId = sessionRepository.save(session, 1L);
+        Long sessionId = sessionRepository.save(session);
         Session found = sessionRepository.findById(sessionId).get();
 
         assertThat(found.getType()).isEqualTo(SessionType.FREE);
@@ -66,9 +66,9 @@ class SessionRepositoryTest {
     @Test
     void 유료강의_저장_후_조회() {
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Session session = new Session(null, period, new PaidEnrollmentPolicy(30, 50000));
+        Session session = new Session(1L, null, period, new PaidEnrollmentPolicy(30, 50000));
 
-        Long sessionId = sessionRepository.save(session, 1L);
+        Long sessionId = sessionRepository.save(session);
         Session found = sessionRepository.findById(sessionId).get();
 
         PaidEnrollmentPolicy policy = (PaidEnrollmentPolicy) found.getEnrollmentPolicy();
@@ -80,8 +80,8 @@ class SessionRepositoryTest {
     @Test
     void 수강신청_저장_후_조회() {
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        Session session = new Session(null, period, SessionStatus.RECRUITING, new PaidEnrollmentPolicy(30, 50000));
-        Long sessionId = sessionRepository.save(session, 1L);
+        Session session = new Session(1L, null, period, SessionStatus.RECRUITING, new PaidEnrollmentPolicy(30, 50000));
+        Long sessionId = sessionRepository.save(session);
 
         Enrollment enrollment = new Enrollment(sessionId, 1L, LocalDateTime.now());
         sessionRepository.saveEnrollment(enrollment);
@@ -93,8 +93,8 @@ class SessionRepositoryTest {
     @Test
     void courseId로_조회() {
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-        sessionRepository.save(new Session(null, period, new FreeEnrollmentPolicy()), 1L);
-        sessionRepository.save(new Session(null, period, new PaidEnrollmentPolicy(10, 30000)), 1L);
+        sessionRepository.save(new Session(1L, null, period, new FreeEnrollmentPolicy()));
+        sessionRepository.save(new Session(1L, null, period, new PaidEnrollmentPolicy(10, 30000)));
 
         List<Session> sessions = sessionRepository.findByCourseId(1L);
 

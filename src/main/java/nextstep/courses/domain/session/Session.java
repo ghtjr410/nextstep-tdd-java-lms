@@ -7,28 +7,32 @@ import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 
 public class Session {
     private final Long id;
+    private final Long courseId;
     private final CoverImage coverImage;
     private final SessionPeriod period;
     private final SessionStatus status;
     private final EnrollmentPolicy enrollmentPolicy;
     private final Enrollments enrollments;
 
-    public Session(CoverImage coverImage, SessionPeriod period, EnrollmentPolicy policy) {
-        this(0L, coverImage, period, SessionStatus.PREPARING, policy, new Enrollments());
+    public Session(Long courseId, CoverImage coverImage, SessionPeriod period, EnrollmentPolicy policy) {
+        this(0L, courseId, coverImage, period, SessionStatus.PREPARING, policy, new Enrollments());
     }
 
-    public Session(CoverImage coverImage, SessionPeriod period, SessionStatus status, EnrollmentPolicy policy) {
-        this(0L, coverImage, period, status, policy, new Enrollments());
+    public Session(
+            Long courseId, CoverImage coverImage, SessionPeriod period, SessionStatus status, EnrollmentPolicy policy) {
+        this(0L, courseId, coverImage, period, status, policy, new Enrollments());
     }
 
     public Session(
             Long id,
+            Long courseId,
             CoverImage coverImage,
             SessionPeriod period,
             SessionStatus status,
             EnrollmentPolicy policy,
             Enrollments enrollments) {
         this.id = id;
+        this.courseId = courseId;
         this.coverImage = coverImage;
         this.period = period;
         this.status = status;
@@ -50,6 +54,10 @@ public class Session {
 
     public int enrollmentCount() {
         return enrollments.count();
+    }
+
+    public Long getCourseId() {
+        return courseId;
     }
 
     public SessionStatus getStatus() {
