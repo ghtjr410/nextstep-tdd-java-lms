@@ -1,4 +1,4 @@
-package nextstep.courses.domain.image;
+package nextstep.courses.domain.session.image;
 
 public class CoverImage {
     private final ImageFile imageFile;

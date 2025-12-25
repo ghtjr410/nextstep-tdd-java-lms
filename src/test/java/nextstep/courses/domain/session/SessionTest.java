@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import nextstep.courses.domain.Money;
-import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;

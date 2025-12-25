@@ -1,4 +1,4 @@
-package nextstep.courses.domain.image;
+package nextstep.courses.domain.session.image;
 
 public class ImageFile {
     private static final long MAX_FILE_SIZE = 1024 * 1024;

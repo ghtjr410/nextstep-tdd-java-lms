@@ -2,7 +2,7 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 import nextstep.courses.domain.Money;
-import nextstep.courses.domain.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 
 public class Session {
