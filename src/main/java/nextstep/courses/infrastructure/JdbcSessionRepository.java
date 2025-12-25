@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
@@ -27,6 +28,16 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Long save(Session session, Long courseId) {
+        Long sessionId = insertSession(session, courseId);
+
+        if (session.getCoverImage() != null) {
+            insertCoverImage(session.getCoverImage(), sessionId);
+        }
+
+        return sessionId;
+    }
+
+    private long insertSession(Session session, Long courseId) {
         final Integer maxEnrollment;
         final Integer price;
 
@@ -61,6 +72,20 @@ public class JdbcSessionRepository implements SessionRepository {
         return keyHolder.getKey().longValue();
     }
 
+    private void insertCoverImage(CoverImage coverImage, Long sessionId) {
+        String sql =
+                "insert into cover_image (session_id, filename, file_size, width, height, image_type) values (?, ?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(
+                sql,
+                sessionId,
+                coverImage.getFilename(),
+                coverImage.getFileSize(),
+                coverImage.getWidth(),
+                coverImage.getHeight(),
+                coverImage.getImageType().name());
+    }
+
     @Override
     public Optional<Session> findById(Long id) {
         String sql = "select * from session where id = ?";
@@ -76,12 +101,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     private RowMapper<Session> rowMapper() {
         return (rs, rowNum) -> {
+            Long sessionId = rs.getLong("id");
             String type = rs.getString("session_type");
             EnrollmentPolicy policy = createPolicy(type, rs.getInt("max_enrollment"), rs.getInt("price"));
+            CoverImage coverImage = findCoverImageBySessionId(sessionId);
 
             return new Session(
                     rs.getLong("id"),
-                    null,
+                    coverImage,
                     new SessionPeriod(
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
@@ -96,5 +123,16 @@ public class JdbcSessionRepository implements SessionRepository {
             return new PaidEnrollmentPolicy(maxEnrollment, price);
         }
         return new FreeEnrollmentPolicy();
+    }
+
+    private CoverImage findCoverImageBySessionId(Long sessionId) {
+        String sql = "select * from cover_image where session_id = ?";
+        List<CoverImage> images = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new CoverImage(
+                        rs.getString("filename"), rs.getLong("file_size"), rs.getInt("width"), rs.getInt("height")),
+                sessionId);
+
+        return images.stream().findFirst().orElse(null);
     }
 }

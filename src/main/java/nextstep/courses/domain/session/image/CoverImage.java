@@ -8,4 +8,24 @@ public class CoverImage {
         this.imageFile = new ImageFile(filename, fileSize);
         this.dimension = new ImageDimension(width, height);
     }
+
+    public String getFilename() {
+        return imageFile.getFilename();
+    }
+
+    public long getFileSize() {
+        return imageFile.getFileSize();
+    }
+
+    public ImageType getImageType() {
+        return imageFile.getImageType();
+    }
+
+    public int getWidth() {
+        return dimension.getWidth();
+    }
+
+    public int getHeight() {
+        return dimension.getHeight();
+    }
 }

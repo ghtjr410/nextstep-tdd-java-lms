@@ -75,4 +75,8 @@ public class Session {
     public EnrollmentPolicy getEnrollmentPolicy() {
         return enrollmentPolicy;
     }
+
+    public CoverImage getCoverImage() {
+        return coverImage;
+    }
 }

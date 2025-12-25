@@ -30,4 +30,12 @@ public class ImageDimension {
             throw new IllegalArgumentException(String.format("이미지 비율은 3:2여야 합니다. (입력: %d:%d)", width, height));
         }
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

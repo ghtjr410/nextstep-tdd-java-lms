@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.List;
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 @JdbcTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class JdbcSessionRepositoryTest {
+class SessionRepositoryTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -34,6 +35,19 @@ class JdbcSessionRepositoryTest {
                 "TDD 강의",
                 1L,
                 java.sql.Timestamp.valueOf(java.time.LocalDateTime.now()));
+    }
+
+    @Test
+    void 커버이미지포함_저장_후_조회() {
+        CoverImage coverImage = new CoverImage("image.png", 1024, 300, 200);
+        SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
+        Session session = new Session(coverImage, period, new FreeEnrollmentPolicy());
+
+        Long sessionId = sessionRepository.save(session, 1L);
+        Session found = sessionRepository.findById(sessionId).get();
+
+        assertThat(found.getCoverImage()).isNotNull();
+        assertThat(found.getCoverImage().getFilename()).isEqualTo("image.png");
     }
 
     @Test

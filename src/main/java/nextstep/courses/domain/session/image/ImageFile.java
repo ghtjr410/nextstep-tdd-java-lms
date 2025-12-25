@@ -27,4 +27,16 @@ public class ImageFile {
         }
         return filename.substring(dotIndex + 1);
     }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
 }
