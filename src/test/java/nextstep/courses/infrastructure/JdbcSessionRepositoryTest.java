@@ -3,6 +3,7 @@ package nextstep.courses.infrastructure;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
@@ -59,5 +60,16 @@ class JdbcSessionRepositoryTest {
         assertThat(found.getType()).isEqualTo(SessionType.PAID);
         assertThat(policy.getCapacity().getValue()).isEqualTo(30);
         assertThat(policy.getPrice().getAmount()).isEqualTo(50000);
+    }
+
+    @Test
+    void courseId로_조회() {
+        SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
+        sessionRepository.save(new Session(null, period, new FreeEnrollmentPolicy()), 1L);
+        sessionRepository.save(new Session(null, period, new PaidEnrollmentPolicy(10, 30000)), 1L);
+
+        List<Session> sessions = sessionRepository.findByCourseId(1L);
+
+        assertThat(sessions).hasSize(2);
     }
 }
