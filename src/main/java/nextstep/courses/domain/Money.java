@@ -17,4 +17,8 @@ public class Money {
     public boolean isSameAs(Money other) {
         return this.amount == other.amount;
     }
+
+    public int getAmount() {
+        return amount;
+    }
 }

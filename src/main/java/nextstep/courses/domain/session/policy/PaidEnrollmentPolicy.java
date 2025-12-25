@@ -34,4 +34,12 @@ public class PaidEnrollmentPolicy extends EnrollmentPolicy {
             throw new IllegalStateException(String.format("수강 인원이 초과되었습니다. (최대: %d명)", capacity.getValue()));
         }
     }
+
+    public Capacity getCapacity() {
+        return capacity;
+    }
+
+    public Money getPrice() {
+        return price;
+    }
 }

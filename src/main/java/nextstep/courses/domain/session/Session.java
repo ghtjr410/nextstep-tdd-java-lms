@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import java.time.LocalDate;
 import nextstep.courses.domain.Money;
 import nextstep.courses.domain.image.CoverImage;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
@@ -57,5 +58,21 @@ public class Session {
 
     public SessionType getType() {
         return enrollmentPolicy.getType();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getStartDate() {
+        return period.getStartDate();
+    }
+
+    public LocalDate getEndDate() {
+        return period.getEndDate();
+    }
+
+    public EnrollmentPolicy getEnrollmentPolicy() {
+        return enrollmentPolicy;
     }
 }

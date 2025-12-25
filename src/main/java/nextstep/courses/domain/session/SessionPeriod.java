@@ -18,4 +18,12 @@ public class SessionPeriod {
                     String.format("종료일은 시작일 이후여야 합니다. (시작: %s, 종료: %s)", startDate, endDate));
         }
     }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
 }
