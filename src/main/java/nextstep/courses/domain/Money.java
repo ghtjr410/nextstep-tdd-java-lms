@@ -5,6 +5,10 @@ public class Money {
 
     private final int amount;
 
+    public Money(long input) {
+        this((int) input);
+    }
+
     public Money(int amount) {
         validate(amount);
         this.amount = amount;
