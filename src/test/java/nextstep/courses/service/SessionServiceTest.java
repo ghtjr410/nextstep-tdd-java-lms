@@ -44,7 +44,7 @@ class SessionServiceTest {
     }
 
     @Test
-    void 수강신청_성공() {
+    void enroll_수강신청_성공() {
         // given
         SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
         Session session = new Session(1L, null, period, SessionStatus.RECRUITING, new PaidEnrollmentPolicy(30, 50000));
@@ -60,7 +60,7 @@ class SessionServiceTest {
     }
 
     @Test
-    void 존재하지_않는_강의_수강신청시_예외() {
+    void enroll_존재하지_않는_강의_수강신청시_예외() {
         // given
         Long invalidSessionId = 999L;
         Payment payment = new Payment("1", invalidSessionId, 1L, 50000L);
