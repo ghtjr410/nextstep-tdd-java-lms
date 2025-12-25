@@ -22,4 +22,12 @@ public class Enrollment {
     public Long getStudentId() {
         return studentId;
     }
+
+    public Long getSessionId() {
+        return sessionId;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

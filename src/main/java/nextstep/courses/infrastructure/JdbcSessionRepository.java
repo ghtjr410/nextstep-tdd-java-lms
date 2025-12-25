@@ -87,6 +87,16 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
+    public void saveEnrollment(Enrollment enrollment) {
+        String sql = "insert into enrollment (session_id, student_id, created_at) values (?, ?, ?)";
+        jdbcTemplate.update(
+                sql,
+                enrollment.getSessionId(),
+                enrollment.getStudentId(),
+                Timestamp.valueOf(enrollment.getCreatedAt()));
+    }
+
+    @Override
     public Optional<Session> findById(Long id) {
         String sql = "select * from session where id = ?";
         List<Session> sessions = jdbcTemplate.query(sql, rowMapper(), id);
@@ -105,6 +115,7 @@ public class JdbcSessionRepository implements SessionRepository {
             String type = rs.getString("session_type");
             EnrollmentPolicy policy = createPolicy(type, rs.getInt("max_enrollment"), rs.getInt("price"));
             CoverImage coverImage = findCoverImageBySessionId(sessionId);
+            Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
             return new Session(
                     rs.getLong("id"),
@@ -114,7 +125,7 @@ public class JdbcSessionRepository implements SessionRepository {
                             rs.getDate("end_date").toLocalDate()),
                     SessionStatus.valueOf(rs.getString("status")),
                     policy,
-                    new Enrollments());
+                    enrollments);
         };
     }
 
@@ -134,5 +145,19 @@ public class JdbcSessionRepository implements SessionRepository {
                 sessionId);
 
         return images.stream().findFirst().orElse(null);
+    }
+
+    private Enrollments findEnrollmentsBySessionId(Long sessionId) {
+        String sql = "select * from enrollment where session_id = ?";
+        List<Enrollment> list = jdbcTemplate.query(
+                sql,
+                (rs, rowNum) -> new Enrollment(
+                        rs.getLong("id"),
+                        rs.getLong("session_id"),
+                        rs.getLong("student_id"),
+                        rs.getTimestamp("created_at").toLocalDateTime()),
+                sessionId);
+
+        return new Enrollments(list);
     }
 }
