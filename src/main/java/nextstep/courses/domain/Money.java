@@ -5,6 +5,10 @@ public class Money {
 
     private final int amount;
 
+    public Money(long input) {
+        this((int) input);
+    }
+
     public Money(int amount) {
         validate(amount);
         this.amount = amount;
@@ -16,5 +20,9 @@ public class Money {
 
     public boolean isSameAs(Money other) {
         return this.amount == other.amount;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }
