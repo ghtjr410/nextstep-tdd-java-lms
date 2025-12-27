@@ -46,4 +46,8 @@ public class Enrollments {
     public int count() {
         return this.values.size();
     }
+
+    public List<Enrollment> getValues() {
+        return values;
+    }
 }

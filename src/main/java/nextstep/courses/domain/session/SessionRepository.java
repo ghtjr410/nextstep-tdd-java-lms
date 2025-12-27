@@ -8,6 +8,8 @@ public interface SessionRepository {
 
     void saveEnrollment(Enrollment enrollment);
 
+    void updateEnrollment(Enrollment enrollment);
+
     Optional<Session> findById(Long id);
 
     List<Session> findByCourseId(Long courseId);

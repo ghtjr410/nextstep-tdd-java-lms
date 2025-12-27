@@ -118,4 +118,8 @@ public class Session {
     public CoverImages getCoverImages() {
         return coverImages;
     }
+
+    public Enrollments getEnrollments() {
+        return enrollments;
+    }
 }

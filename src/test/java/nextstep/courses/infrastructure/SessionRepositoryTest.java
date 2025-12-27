@@ -88,6 +88,26 @@ class SessionRepositoryTest {
     }
 
     @Test
+    void 수강신청_상태_업데이트() {
+        // given
+        Session session = SessionBuilder.aSession()
+                .withProgressStatus(ProgressStatus.IN_PROGRESS)
+                .withRecruitmentStatus(RecruitmentStatus.RECRUITING)
+                .withPaidPolicy(30, 50000)
+                .build();
+        Long sessionId = sessionRepository.save(session);
+        Enrollment enrollment = new Enrollment(sessionId, 1L, LocalDateTime.now());
+        sessionRepository.saveEnrollment(enrollment);
+
+        enrollment.approve();
+        sessionRepository.updateEnrollment(enrollment);
+
+        Session found = sessionRepository.findById(sessionId).get();
+        Enrollment foundEnrollment = found.getEnrollments().getValues().get(0);
+        assertThat(foundEnrollment.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+    }
+
+    @Test
     void courseId로_조회() {
         sessionRepository.save(SessionBuilder.aSession().withFreePolicy().build());
         sessionRepository.save(

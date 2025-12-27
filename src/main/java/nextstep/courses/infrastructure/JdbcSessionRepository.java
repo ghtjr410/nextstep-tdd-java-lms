@@ -102,6 +102,12 @@ public class JdbcSessionRepository implements SessionRepository {
     }
 
     @Override
+    public void updateEnrollment(Enrollment enrollment) {
+        String sql = "update enrollment set status = ? where session_id = ? and student_id = ?";
+        jdbcTemplate.update(sql, enrollment.getStatus().name(), enrollment.getSessionId(), enrollment.getStudentId());
+    }
+
+    @Override
     public Optional<Session> findById(Long id) {
         String sql = "select * from session where id = ?";
         List<Session> sessions = jdbcTemplate.query(sql, rowMapper(), id);
