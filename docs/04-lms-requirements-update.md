@@ -2,7 +2,7 @@
 ***
 ## 코드 리뷰
 > PR 링크:
-> 
+> **[https://github.com/next-step/java-lms/pull/826](https://github.com/next-step/java-lms/pull/826)**
 
 ## 나의 학습 목표
 - TDD 사이클로 구현
