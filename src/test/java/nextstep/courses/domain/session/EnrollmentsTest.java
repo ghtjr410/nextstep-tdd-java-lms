@@ -37,4 +37,22 @@ class EnrollmentsTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("이미 수강 신청한 강의입니다.");
     }
+
+    @Test
+    void approve_없는학생승인시_예외발생() {
+        Enrollments enrollments = new Enrollments();
+
+        assertThatThrownBy(() -> enrollments.approve(999L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("수강 신청 내역이 없습니다");
+    }
+
+    @Test
+    void reject_없는학생취소시_예외발생() {
+        Enrollments enrollments = new Enrollments();
+
+        assertThatThrownBy(() -> enrollments.reject(999L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("수강 신청 내역이 없습니다");
+    }
 }

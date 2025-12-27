@@ -26,6 +26,23 @@ public class Enrollments {
         }
     }
 
+    public void approve(Long studentId) {
+        Enrollment enrollment = findByStudentId(studentId);
+        enrollment.approve();
+    }
+
+    public void reject(Long studentId) {
+        Enrollment enrollment = findByStudentId(studentId);
+        enrollment.reject();
+    }
+
+    private Enrollment findByStudentId(Long studentId) {
+        return values.stream()
+                .filter(e -> e.getStudentId().equals(studentId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("수강 신청 내역이 없습니다."));
+    }
+
     public int count() {
         return this.values.size();
     }
