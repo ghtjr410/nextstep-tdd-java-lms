@@ -33,3 +33,103 @@
 
 ## PR 전 점검
 **[체크리스트 확인하기](checklist.md)**
+
+## 구현 기능 목록
+#### Course
+- [x] 강의 추가
+- [x] 강의 개수 조회
+
+#### Sessions (일급 컬렉션)
+- [x] 강의 추가
+- [x] 강의 개수 조회
+
+#### Session
+- [x] 수강 신청
+  - [x] 모집중 상태 검증
+  - [x] Policy에 검증 위임
+- [x] 수강 승인
+- [x] 수강 취소
+- [x] 수강 인원 조회
+- [x] 강의 타입 조회 (Policy에서 반환)
+
+#### EnrollmentPolicy (추상 클래스, 템플릿 메서드 패턴)
+- [x] final validate(payment, currentCount) - 알고리즘 순서 강제
+- [x] 결제 검증 (validatePayment) - 하위에서 구현
+- [x] 정원 검증 (validateCapacity) - 하위에서 구현
+- [x] 강의 타입 반환 (getType) - 하위에서 구현
+
+#### FreeEnrollmentPolicy
+- [x] EnrollmentPolicy 상속
+- [x] 결제 검증: 빈 구현 (무료)
+- [x] 정원 검증: 빈 구현 (제한 없음)
+- [x] 타입 반환: FREE
+
+#### PaidEnrollmentPolicy
+- [x] EnrollmentPolicy 상속
+- [x] 결제 금액 검증 (수강료 일치)
+- [x] 수강 인원 검증 (정원 초과)
+- [x] 타입 반환: PAID
+
+#### Enrollments (일급 컬렉션)
+- [x] 수강 신청 추가
+- [x] 수강 인원 조회
+- [x] 중복 수강 신청 검증
+- [x] 승인
+- [x] 취소
+
+#### Enrollment
+- [x] 생성 시 PENDING 상태
+- [x] 승인 → APPROVED
+- [x] 취소 → REJECTED
+
+#### EnrollmentStatus (Enum)
+- [x] 수강 신청 승인 여부
+
+#### CoverImages (일급 컬렉션)
+- [x] 1개 이상 필수 검증
+- [x] 여러 이미지 관리
+
+#### CoverImage (VO)
+- [x] 이미지 파일 정보와 크기 정보 조합 생성
+
+#### ImageFile (VO)
+- [x] 파일 크기 검증 (1MB 이하)
+- [x] 확장자 추출
+- [x] 이미지 타입 변환
+
+#### ImageDimension (VO)
+- [x] 너비/높이 최소값 검증 (300x200 이상)
+- [x] 비율 검증 (3:2)
+
+#### ImageType (Enum)
+- [x] 확장자 → ImageType 변환 (from(String))
+- [x] JPEG → JPG 변환 지원
+
+#### SessionPeriod (VO)
+- [x] 시작일/종료일 검증 (종료일 >= 시작일)
+
+#### ProgressStatus (Enum) - 4단계 추가
+- [x] 종료 여부 확인
+
+#### RecruitmentStatus (Enum) - 4단계 추가
+- [x] 수강 신청 가능 여부
+
+#### Money (VO)
+- [x] 금액 검증 (0 이상)
+- [x] 금액 비교
+
+#### Capacity (VO)
+- [x] 최대 인원 검증 (1명 이상)
+- [x] 초과 여부 확인
+
+#### SessionRepository
+- [x] Session 저장
+- [x] Session 조회
+- [x] courseId로 Session 목록 조회
+- [x] Enrollment 저장
+- [x] Enrollment 업데이트
+
+#### SessionService
+- [x] 수강 신청
+- [x] 수강 승인
+- [x] 수강 취소
