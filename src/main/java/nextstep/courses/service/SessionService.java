@@ -22,7 +22,6 @@ public class SessionService {
     public void enroll(Long sessionId, Long studentId, Payment payment) {
         Session session =
                 sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
-        ;
 
         Enrollment enrollment = new Enrollment(sessionId, studentId, LocalDateTime.now());
         session.enroll(enrollment, new Money(payment.getAmount()));
