@@ -103,8 +103,10 @@ class SessionRepositoryTest {
         sessionRepository.updateEnrollment(enrollment);
 
         Session found = sessionRepository.findById(sessionId).get();
-        Enrollment foundEnrollment = found.getEnrollments().getValues().get(0);
-        assertThat(foundEnrollment.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+        assertThat(found.getEnrollments().getValues())
+                .hasSize(1)
+                .extracting(Enrollment::getStatus)
+                .containsExactly(EnrollmentStatus.APPROVED);
     }
 
     @Test
