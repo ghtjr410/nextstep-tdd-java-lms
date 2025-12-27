@@ -28,4 +28,22 @@ public class SessionService {
 
         sessionRepository.saveEnrollment(enrollment);
     }
+
+    public void approve(Long sessionId, Long studentId) {
+        Session session =
+                sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
+
+        Enrollment approved = session.approve(studentId);
+
+        sessionRepository.updateEnrollment(approved);
+    }
+
+    public void reject(Long sessionId, Long studentId) {
+        Session session =
+                sessionRepository.findById(sessionId).orElseThrow(() -> new IllegalArgumentException("강의를 찾을 수 없습니다."));
+
+        Enrollment rejected = session.reject(studentId);
+
+        sessionRepository.updateEnrollment(rejected);
+    }
 }

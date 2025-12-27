@@ -26,14 +26,19 @@ public class Enrollments {
         }
     }
 
-    public void approve(Long studentId) {
+    public Enrollment approve(Long studentId) {
         Enrollment enrollment = findByStudentId(studentId);
+
         enrollment.approve();
+
+        return enrollment;
     }
 
-    public void reject(Long studentId) {
+    public Enrollment reject(Long studentId) {
         Enrollment enrollment = findByStudentId(studentId);
         enrollment.reject();
+
+        return enrollment;
     }
 
     private Enrollment findByStudentId(Long studentId) {

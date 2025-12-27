@@ -71,12 +71,12 @@ public class Session {
         }
     }
 
-    public void approve(Long studentId) {
-        enrollments.approve(studentId);
+    public Enrollment approve(Long studentId) {
+        return enrollments.approve(studentId);
     }
 
-    public void reject(Long studentId) {
-        enrollments.reject(studentId);
+    public Enrollment reject(Long studentId) {
+        return enrollments.reject(studentId);
     }
 
     public int enrollmentCount() {
