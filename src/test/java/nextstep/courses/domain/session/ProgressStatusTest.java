@@ -8,11 +8,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class RecruitmentStatusTest {
+class ProgressStatusTest {
 
     @ParameterizedTest
-    @CsvSource({"RECRUITING, true", "NOT_RECRUITING, false"})
-    void canEroll_모집상태별_수강신청_가능_여부(RecruitmentStatus status, boolean expected) {
+    @CsvSource({"PREPARING, true", "IN_PROGRESS, true", "CLOSED, false"})
+    void canEnroll_진행상태별_수강신청_가능_여부(ProgressStatus status, boolean expected) {
         assertThat(status.canEnroll()).isEqualTo(expected);
     }
 }

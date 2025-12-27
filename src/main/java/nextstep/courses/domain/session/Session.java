@@ -22,7 +22,46 @@ public class Session {
 
     public Session(
             Long courseId, CoverImage coverImage, SessionPeriod period, SessionStatus status, EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, status, null, null, policy, new Enrollments());
+        this(
+                0L,
+                courseId,
+                coverImage,
+                period,
+                status,
+                toProgressStatus(status),
+                toRecruitmentStatus(status),
+                policy,
+                new Enrollments());
+    }
+
+    public Session(
+            Long courseId,
+            CoverImage coverImage,
+            SessionPeriod period,
+            SessionStatus status,
+            ProgressStatus progressStatus,
+            RecruitmentStatus recruitmentStatus,
+            EnrollmentPolicy policy) {
+        this(0L, courseId, coverImage, period, status, progressStatus, recruitmentStatus, policy, new Enrollments());
+    }
+
+    private static ProgressStatus toProgressStatus(SessionStatus status) {
+        switch (status) {
+            case RECRUITING:
+                return ProgressStatus.IN_PROGRESS;
+            case CLOSED:
+                return ProgressStatus.CLOSED;
+            case PREPARING:
+            default:
+                return ProgressStatus.PREPARING;
+        }
+    }
+
+    private static RecruitmentStatus toRecruitmentStatus(SessionStatus status) {
+        if (status == SessionStatus.RECRUITING) {
+            return RecruitmentStatus.RECRUITING;
+        }
+        return RecruitmentStatus.NOT_RECRUITING;
     }
 
     public Session(
@@ -53,8 +92,11 @@ public class Session {
     }
 
     private void validateStatus() {
-        if (!status.canEnroll()) {
-            throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", status));
+        if (!progressStatus.canEnroll()) {
+            throw new IllegalStateException(String.format("종료된 강의는 수강 신청이 불가능합니다. (현재 상태: %s)", progressStatus));
+        }
+        if (!recruitmentStatus.canEnroll()) {
+            throw new IllegalStateException(String.format("모집중인 강의만 수강 신청이 가능합니다. (현재 상태: %s)", recruitmentStatus));
         }
     }
 

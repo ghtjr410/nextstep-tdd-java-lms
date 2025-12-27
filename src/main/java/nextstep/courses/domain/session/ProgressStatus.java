@@ -10,4 +10,8 @@ public enum ProgressStatus {
     ProgressStatus(String description) {
         this.description = description;
     }
+
+    public boolean canEnroll() {
+        return this != CLOSED;
+    }
 }
