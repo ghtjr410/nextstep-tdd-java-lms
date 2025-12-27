@@ -20,7 +20,8 @@ public class Enrollments {
     }
 
     private void validateNotDuplicate(Enrollment enrollment) {
-        if (values.contains(enrollment)) {
+        boolean exists = values.stream().anyMatch(e -> e.getStudentId().equals(enrollment.getStudentId()));
+        if (exists) {
             throw new IllegalArgumentException("이미 수강 신청한 강의입니다.");
         }
     }
