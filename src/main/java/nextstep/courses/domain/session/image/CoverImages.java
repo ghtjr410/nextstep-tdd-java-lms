@@ -6,7 +6,7 @@ import java.util.List;
 public class CoverImages {
     private static final int MIN_SIZE = 1;
 
-    public final List<CoverImage> values;
+    private final List<CoverImage> values;
 
     public CoverImages(List<CoverImage> values) {
         validate(values);

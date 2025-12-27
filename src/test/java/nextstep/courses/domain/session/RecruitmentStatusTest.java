@@ -12,7 +12,7 @@ class RecruitmentStatusTest {
 
     @ParameterizedTest
     @CsvSource({"RECRUITING, true", "NOT_RECRUITING, false"})
-    void canEroll_모집상태별_수강신청_가능_여부(RecruitmentStatus status, boolean expected) {
+    void canEnroll_모집상태별_수강신청_가능_여부(RecruitmentStatus status, boolean expected) {
         assertThat(status.canEnroll()).isEqualTo(expected);
     }
 }
