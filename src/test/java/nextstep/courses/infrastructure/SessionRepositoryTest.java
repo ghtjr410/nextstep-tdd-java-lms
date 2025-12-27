@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import nextstep.courses.domain.session.*;
+import nextstep.courses.domain.session.image.CoverImage;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -44,8 +45,10 @@ class SessionRepositoryTest {
         Long sessionId = sessionRepository.save(session);
         Session found = sessionRepository.findById(sessionId).get();
 
-        assertThat(found.getCoverImage()).isNotNull();
-        assertThat(found.getCoverImage().getFilename()).isEqualTo("image.png");
+        assertThat(found.getCoverImages().size()).isEqualTo(1);
+        assertThat(found.getCoverImages().getValues())
+                .extracting(CoverImage::getFilename)
+                .contains("image.png");
     }
 
     @Test

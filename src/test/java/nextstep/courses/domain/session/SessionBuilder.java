@@ -1,14 +1,16 @@
 package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
+import java.util.List;
 import nextstep.courses.domain.session.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImages;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
 
 public class SessionBuilder {
     private Long courseId = 1L;
-    private CoverImage coverImage = null;
+    private CoverImages coverImages = null;
     private SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
     private ProgressStatus progressStatus = ProgressStatus.PREPARING;
     private RecruitmentStatus recruitmentStatus = RecruitmentStatus.NOT_RECRUITING;
@@ -24,7 +26,12 @@ public class SessionBuilder {
     }
 
     public SessionBuilder withCoverImage(String filename, long fileSize, int width, int height) {
-        this.coverImage = new CoverImage(filename, fileSize, width, height);
+        this.coverImages = new CoverImages(List.of(new CoverImage(filename, fileSize, width, height)));
+        return this;
+    }
+
+    public SessionBuilder withCoverImages(CoverImages coverImages) {
+        this.coverImages = coverImages;
         return this;
     }
 
@@ -49,6 +56,6 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(courseId, coverImage, period, progressStatus, recruitmentStatus, policy);
+        return new Session(courseId, coverImages, period, progressStatus, recruitmentStatus, policy);
     }
 }

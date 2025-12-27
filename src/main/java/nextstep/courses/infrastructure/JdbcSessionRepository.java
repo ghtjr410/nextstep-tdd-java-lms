@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImages;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
@@ -30,8 +31,10 @@ public class JdbcSessionRepository implements SessionRepository {
     public Long save(Session session) {
         Long sessionId = insertSession(session);
 
-        if (session.getCoverImage() != null) {
-            insertCoverImage(session.getCoverImage(), sessionId);
+        if (session.getCoverImages() != null) {
+            for (CoverImage coverImage : session.getCoverImages().getValues()) {
+                insertCoverImage(coverImage, sessionId);
+            }
         }
 
         return sessionId;
@@ -115,13 +118,13 @@ public class JdbcSessionRepository implements SessionRepository {
             Long sessionId = rs.getLong("id");
             String type = rs.getString("session_type");
             EnrollmentPolicy policy = createPolicy(type, rs.getInt("max_enrollment"), rs.getInt("price"));
-            CoverImage coverImage = findCoverImageBySessionId(sessionId);
+            CoverImages coverImages = findCoverImageBySessionId(sessionId);
             Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
             return new Session(
                     sessionId,
                     rs.getLong("course_id"),
-                    coverImage,
+                    coverImages,
                     new SessionPeriod(
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
@@ -139,7 +142,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return new FreeEnrollmentPolicy();
     }
 
-    private CoverImage findCoverImageBySessionId(Long sessionId) {
+    private CoverImages findCoverImageBySessionId(Long sessionId) {
         String sql = "select * from cover_image where session_id = ?";
         List<CoverImage> images = jdbcTemplate.query(
                 sql,
@@ -147,7 +150,11 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getString("filename"), rs.getLong("file_size"), rs.getInt("width"), rs.getInt("height")),
                 sessionId);
 
-        return images.stream().findFirst().orElse(null);
+        if (images.isEmpty()) {
+            return null;
+        }
+
+        return new CoverImages(images);
     }
 
     private Enrollments findEnrollmentsBySessionId(Long sessionId) {

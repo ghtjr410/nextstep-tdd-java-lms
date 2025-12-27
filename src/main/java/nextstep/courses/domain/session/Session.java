@@ -2,24 +2,24 @@ package nextstep.courses.domain.session;
 
 import java.time.LocalDate;
 import nextstep.courses.domain.Money;
-import nextstep.courses.domain.session.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImages;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 
 public class Session {
     private final Long id;
     private final Long courseId;
-    private final CoverImage coverImage;
+    private final CoverImages coverImages;
     private final SessionPeriod period;
     private final ProgressStatus progressStatus;
     private final RecruitmentStatus recruitmentStatus;
     private final EnrollmentPolicy enrollmentPolicy;
     private final Enrollments enrollments;
 
-    public Session(Long courseId, CoverImage coverImage, SessionPeriod period, EnrollmentPolicy policy) {
+    public Session(Long courseId, CoverImages coverImages, SessionPeriod period, EnrollmentPolicy policy) {
         this(
                 0L,
                 courseId,
-                coverImage,
+                coverImages,
                 period,
                 ProgressStatus.PREPARING,
                 RecruitmentStatus.NOT_RECRUITING,
@@ -29,18 +29,18 @@ public class Session {
 
     public Session(
             Long courseId,
-            CoverImage coverImage,
+            CoverImages coverImages,
             SessionPeriod period,
             ProgressStatus progressStatus,
             RecruitmentStatus recruitmentStatus,
             EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, progressStatus, recruitmentStatus, policy, new Enrollments());
+        this(0L, courseId, coverImages, period, progressStatus, recruitmentStatus, policy, new Enrollments());
     }
 
     public Session(
             Long id,
             Long courseId,
-            CoverImage coverImage,
+            CoverImages coverImages,
             SessionPeriod period,
             ProgressStatus progressStatus,
             RecruitmentStatus recruitmentStatus,
@@ -48,7 +48,7 @@ public class Session {
             Enrollments enrollments) {
         this.id = id;
         this.courseId = courseId;
-        this.coverImage = coverImage;
+        this.coverImages = coverImages;
         this.period = period;
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
@@ -107,7 +107,7 @@ public class Session {
         return enrollmentPolicy;
     }
 
-    public CoverImage getCoverImage() {
-        return coverImage;
+    public CoverImages getCoverImages() {
+        return coverImages;
     }
 }
