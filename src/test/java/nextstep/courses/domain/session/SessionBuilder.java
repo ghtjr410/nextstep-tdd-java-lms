@@ -10,7 +10,6 @@ public class SessionBuilder {
     private Long courseId = 1L;
     private CoverImage coverImage = null;
     private SessionPeriod period = new SessionPeriod(LocalDate.of(2024, 1, 1), LocalDate.of(2024, 3, 31));
-    private SessionStatus status = SessionStatus.PREPARING;
     private ProgressStatus progressStatus = ProgressStatus.PREPARING;
     private RecruitmentStatus recruitmentStatus = RecruitmentStatus.NOT_RECRUITING;
     private EnrollmentPolicy policy = new FreeEnrollmentPolicy();
@@ -26,11 +25,6 @@ public class SessionBuilder {
 
     public SessionBuilder withCoverImage(String filename, long fileSize, int width, int height) {
         this.coverImage = new CoverImage(filename, fileSize, width, height);
-        return this;
-    }
-
-    public SessionBuilder withStatus(SessionStatus status) {
-        this.status = status;
         return this;
     }
 
@@ -55,6 +49,6 @@ public class SessionBuilder {
     }
 
     public Session build() {
-        return new Session(courseId, coverImage, period, status, progressStatus, recruitmentStatus, policy);
+        return new Session(courseId, coverImage, period, progressStatus, recruitmentStatus, policy);
     }
 }

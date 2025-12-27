@@ -10,26 +10,19 @@ public class Session {
     private final Long courseId;
     private final CoverImage coverImage;
     private final SessionPeriod period;
-    private final SessionStatus status;
     private final ProgressStatus progressStatus;
     private final RecruitmentStatus recruitmentStatus;
     private final EnrollmentPolicy enrollmentPolicy;
     private final Enrollments enrollments;
 
     public Session(Long courseId, CoverImage coverImage, SessionPeriod period, EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, SessionStatus.PREPARING, null, null, policy, new Enrollments());
-    }
-
-    public Session(
-            Long courseId, CoverImage coverImage, SessionPeriod period, SessionStatus status, EnrollmentPolicy policy) {
         this(
                 0L,
                 courseId,
                 coverImage,
                 period,
-                status,
-                toProgressStatus(status),
-                toRecruitmentStatus(status),
+                ProgressStatus.PREPARING,
+                RecruitmentStatus.NOT_RECRUITING,
                 policy,
                 new Enrollments());
     }
@@ -38,30 +31,10 @@ public class Session {
             Long courseId,
             CoverImage coverImage,
             SessionPeriod period,
-            SessionStatus status,
             ProgressStatus progressStatus,
             RecruitmentStatus recruitmentStatus,
             EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, status, progressStatus, recruitmentStatus, policy, new Enrollments());
-    }
-
-    private static ProgressStatus toProgressStatus(SessionStatus status) {
-        switch (status) {
-            case RECRUITING:
-                return ProgressStatus.IN_PROGRESS;
-            case CLOSED:
-                return ProgressStatus.CLOSED;
-            case PREPARING:
-            default:
-                return ProgressStatus.PREPARING;
-        }
-    }
-
-    private static RecruitmentStatus toRecruitmentStatus(SessionStatus status) {
-        if (status == SessionStatus.RECRUITING) {
-            return RecruitmentStatus.RECRUITING;
-        }
-        return RecruitmentStatus.NOT_RECRUITING;
+        this(0L, courseId, coverImage, period, progressStatus, recruitmentStatus, policy, new Enrollments());
     }
 
     public Session(
@@ -69,7 +42,6 @@ public class Session {
             Long courseId,
             CoverImage coverImage,
             SessionPeriod period,
-            SessionStatus status,
             ProgressStatus progressStatus,
             RecruitmentStatus recruitmentStatus,
             EnrollmentPolicy policy,
@@ -78,7 +50,6 @@ public class Session {
         this.courseId = courseId;
         this.coverImage = coverImage;
         this.period = period;
-        this.status = status;
         this.progressStatus = progressStatus;
         this.recruitmentStatus = recruitmentStatus;
         this.enrollmentPolicy = policy;
@@ -106,10 +77,6 @@ public class Session {
 
     public Long getCourseId() {
         return courseId;
-    }
-
-    public SessionStatus getStatus() {
-        return this.status;
     }
 
     public ProgressStatus getProgressStatus() {

@@ -51,7 +51,7 @@ public class JdbcSessionRepository implements SessionRepository {
         }
 
         String sql =
-                "insert into session (course_id, session_type, status, progress_status, recruitment_status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "insert into session (course_id, session_type, progress_status, recruitment_status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -59,22 +59,13 @@ public class JdbcSessionRepository implements SessionRepository {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
                     ps.setLong(1, session.getCourseId());
                     ps.setString(2, session.getType().name());
-                    ps.setString(3, session.getStatus().name());
-                    ps.setString(
-                            4,
-                            session.getProgressStatus() != null
-                                    ? session.getProgressStatus().name()
-                                    : null);
-                    ps.setString(
-                            5,
-                            session.getRecruitmentStatus() != null
-                                    ? session.getRecruitmentStatus().name()
-                                    : null);
-                    ps.setDate(6, Date.valueOf(session.getStartDate()));
-                    ps.setDate(7, Date.valueOf(session.getEndDate()));
-                    ps.setObject(8, maxEnrollment);
-                    ps.setObject(9, price);
-                    ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setString(3, session.getProgressStatus().name());
+                    ps.setString(4, session.getRecruitmentStatus().name());
+                    ps.setDate(5, Date.valueOf(session.getStartDate()));
+                    ps.setDate(6, Date.valueOf(session.getEndDate()));
+                    ps.setObject(7, maxEnrollment);
+                    ps.setObject(8, price);
+                    ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
                     return ps;
                 },
                 keyHolder);
@@ -127,14 +118,6 @@ public class JdbcSessionRepository implements SessionRepository {
             CoverImage coverImage = findCoverImageBySessionId(sessionId);
             Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
-            String progressStatusStr = rs.getString("progress_status");
-            String recruitmentStatusStr = rs.getString("recruitment_status");
-
-            ProgressStatus progressStatus =
-                    progressStatusStr != null ? ProgressStatus.valueOf(progressStatusStr) : null;
-            RecruitmentStatus recruitmentStatus =
-                    recruitmentStatusStr != null ? RecruitmentStatus.valueOf(recruitmentStatusStr) : null;
-
             return new Session(
                     sessionId,
                     rs.getLong("course_id"),
@@ -142,9 +125,8 @@ public class JdbcSessionRepository implements SessionRepository {
                     new SessionPeriod(
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
-                    SessionStatus.valueOf(rs.getString("status")),
-                    progressStatus,
-                    recruitmentStatus,
+                    ProgressStatus.valueOf(rs.getString("progress_status")),
+                    RecruitmentStatus.valueOf(rs.getString("recruitment_status")),
                     policy,
                     enrollments);
         };

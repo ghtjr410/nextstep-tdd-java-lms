@@ -55,8 +55,8 @@ class SessionRepositoryTest {
         Long sessionId = sessionRepository.save(session);
         Session found = sessionRepository.findById(sessionId).get();
 
-        assertThat(found.getType()).isEqualTo(SessionType.FREE);
-        assertThat(found.getStatus()).isEqualTo(SessionStatus.PREPARING);
+        assertThat(found.getProgressStatus()).isEqualTo(ProgressStatus.PREPARING);
+        assertThat(found.getRecruitmentStatus()).isEqualTo(RecruitmentStatus.NOT_RECRUITING);
     }
 
     @Test
@@ -74,10 +74,7 @@ class SessionRepositoryTest {
 
     @Test
     void 수강신청_저장_후_조회() {
-        Session session = SessionBuilder.aSession()
-                .withStatus(SessionStatus.RECRUITING)
-                .withPaidPolicy(30, 50000)
-                .build();
+        Session session = SessionBuilder.aSession().withPaidPolicy(30, 50000).build();
         Long sessionId = sessionRepository.save(session);
         Enrollment enrollment = new Enrollment(sessionId, 1L, LocalDateTime.now());
 
