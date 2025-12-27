@@ -165,6 +165,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong("id"),
                         rs.getLong("session_id"),
                         rs.getLong("student_id"),
+                        null,
                         rs.getTimestamp("created_at").toLocalDateTime()),
                 sessionId);
 

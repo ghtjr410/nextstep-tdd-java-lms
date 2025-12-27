@@ -6,16 +6,18 @@ public class Enrollment {
     private final Long id;
     private final Long sessionId;
     private final Long studentId;
+    private EnrollmentStatus status;
     private final LocalDateTime createdAt;
 
     public Enrollment(Long sessionId, Long studentId, LocalDateTime now) {
-        this(0L, sessionId, studentId, now);
+        this(0L, sessionId, studentId, EnrollmentStatus.PENDING, now);
     }
 
-    public Enrollment(Long id, Long sessionId, Long studentId, LocalDateTime createdAt) {
+    public Enrollment(Long id, Long sessionId, Long studentId, EnrollmentStatus status, LocalDateTime createdAt) {
         this.id = id;
         this.sessionId = sessionId;
         this.studentId = studentId;
+        this.status = status;
         this.createdAt = createdAt;
     }
 
@@ -25,6 +27,10 @@ public class Enrollment {
 
     public Long getSessionId() {
         return sessionId;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
     }
 
     public LocalDateTime getCreatedAt() {
