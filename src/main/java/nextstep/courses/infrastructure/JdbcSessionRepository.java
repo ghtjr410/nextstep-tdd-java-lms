@@ -92,11 +92,12 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void saveEnrollment(Enrollment enrollment) {
-        String sql = "insert into enrollment (session_id, student_id, created_at) values (?, ?, ?)";
+        String sql = "insert into enrollment (session_id, student_id, status, created_at) values (?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 enrollment.getSessionId(),
                 enrollment.getStudentId(),
+                enrollment.getStatus().name(),
                 Timestamp.valueOf(enrollment.getCreatedAt()));
     }
 
@@ -165,7 +166,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong("id"),
                         rs.getLong("session_id"),
                         rs.getLong("student_id"),
-                        null,
+                        EnrollmentStatus.valueOf(rs.getString("status")),
                         rs.getTimestamp("created_at").toLocalDateTime()),
                 sessionId);
 
