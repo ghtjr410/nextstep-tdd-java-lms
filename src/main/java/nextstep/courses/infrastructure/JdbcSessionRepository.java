@@ -51,7 +51,7 @@ public class JdbcSessionRepository implements SessionRepository {
         }
 
         String sql =
-                "insert into session (course_id, session_type, status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?)";
+                "insert into session (course_id, session_type, status, progress_status, recruitment_status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -60,11 +60,21 @@ public class JdbcSessionRepository implements SessionRepository {
                     ps.setLong(1, session.getCourseId());
                     ps.setString(2, session.getType().name());
                     ps.setString(3, session.getStatus().name());
-                    ps.setDate(4, Date.valueOf(session.getStartDate()));
-                    ps.setDate(5, Date.valueOf(session.getEndDate()));
-                    ps.setObject(6, maxEnrollment);
-                    ps.setObject(7, price);
-                    ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setString(
+                            4,
+                            session.getProgressStatus() != null
+                                    ? session.getProgressStatus().name()
+                                    : null);
+                    ps.setString(
+                            5,
+                            session.getRecruitmentStatus() != null
+                                    ? session.getRecruitmentStatus().name()
+                                    : null);
+                    ps.setDate(6, Date.valueOf(session.getStartDate()));
+                    ps.setDate(7, Date.valueOf(session.getEndDate()));
+                    ps.setObject(8, maxEnrollment);
+                    ps.setObject(9, price);
+                    ps.setTimestamp(10, Timestamp.valueOf(LocalDateTime.now()));
                     return ps;
                 },
                 keyHolder);

@@ -12,6 +12,8 @@ create table session (
     course_id bigint not null,
     session_type varchar(20) not null,
     status varchar(20) not null,
+    progress_status varchar(20),
+    recruitment_status varchar(20),
     start_date date not null,
     end_date date not null,
     max_enrollment int,

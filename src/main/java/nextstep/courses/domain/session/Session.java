@@ -70,6 +70,14 @@ public class Session {
         return this.status;
     }
 
+    public ProgressStatus getProgressStatus() {
+        return progressStatus;
+    }
+
+    public RecruitmentStatus getRecruitmentStatus() {
+        return recruitmentStatus;
+    }
+
     public SessionType getType() {
         return enrollmentPolicy.getType();
     }
