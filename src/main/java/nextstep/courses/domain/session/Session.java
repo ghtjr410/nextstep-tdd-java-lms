@@ -11,16 +11,18 @@ public class Session {
     private final CoverImage coverImage;
     private final SessionPeriod period;
     private final SessionStatus status;
+    private final ProgressStatus progressStatus;
+    private final RecruitmentStatus recruitmentStatus;
     private final EnrollmentPolicy enrollmentPolicy;
     private final Enrollments enrollments;
 
     public Session(Long courseId, CoverImage coverImage, SessionPeriod period, EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, SessionStatus.PREPARING, policy, new Enrollments());
+        this(0L, courseId, coverImage, period, SessionStatus.PREPARING, null, null, policy, new Enrollments());
     }
 
     public Session(
             Long courseId, CoverImage coverImage, SessionPeriod period, SessionStatus status, EnrollmentPolicy policy) {
-        this(0L, courseId, coverImage, period, status, policy, new Enrollments());
+        this(0L, courseId, coverImage, period, status, null, null, policy, new Enrollments());
     }
 
     public Session(
@@ -29,6 +31,8 @@ public class Session {
             CoverImage coverImage,
             SessionPeriod period,
             SessionStatus status,
+            ProgressStatus progressStatus,
+            RecruitmentStatus recruitmentStatus,
             EnrollmentPolicy policy,
             Enrollments enrollments) {
         this.id = id;
@@ -36,6 +40,8 @@ public class Session {
         this.coverImage = coverImage;
         this.period = period;
         this.status = status;
+        this.progressStatus = progressStatus;
+        this.recruitmentStatus = recruitmentStatus;
         this.enrollmentPolicy = policy;
         this.enrollments = enrollments;
     }

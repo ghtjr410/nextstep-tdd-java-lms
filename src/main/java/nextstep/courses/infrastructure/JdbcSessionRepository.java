@@ -125,6 +125,8 @@ public class JdbcSessionRepository implements SessionRepository {
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
                     SessionStatus.valueOf(rs.getString("status")),
+                    null,
+                    null,
                     policy,
                     enrollments);
         };
