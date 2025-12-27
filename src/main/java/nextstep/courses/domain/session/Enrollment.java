@@ -21,6 +21,18 @@ public class Enrollment {
         this.createdAt = createdAt;
     }
 
+    public void approve() {
+        this.status = EnrollmentStatus.APPROVED;
+    }
+
+    public void reject() {
+        this.status = EnrollmentStatus.REJECTED;
+    }
+
+    public boolean isApproved() {
+        return status == EnrollmentStatus.APPROVED;
+    }
+
     public Long getStudentId() {
         return studentId;
     }

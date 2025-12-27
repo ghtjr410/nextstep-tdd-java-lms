@@ -11,9 +11,27 @@ import org.junit.jupiter.api.Test;
 class EnrollmentTest {
 
     @Test
-    void 생성시_기본상태는_PENDING() {
+    void 생성자_생성시_기본상태는_PENDING() {
         Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
 
         assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.PENDING);
+    }
+
+    @Test
+    void approve_승인하면_APPROVED() {
+        Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
+
+        enrollment.approve();
+
+        assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.APPROVED);
+    }
+
+    @Test
+    void reject_취소하면_REJECTED() {
+        Enrollment enrollment = new Enrollment(1L, 1L, LocalDateTime.now());
+
+        enrollment.reject();
+
+        assertThat(enrollment.getStatus()).isEqualTo(EnrollmentStatus.REJECTED);
     }
 }
