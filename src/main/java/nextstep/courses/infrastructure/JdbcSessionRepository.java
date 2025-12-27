@@ -127,6 +127,14 @@ public class JdbcSessionRepository implements SessionRepository {
             CoverImage coverImage = findCoverImageBySessionId(sessionId);
             Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
+            String progressStatusStr = rs.getString("progress_status");
+            String recruitmentStatusStr = rs.getString("recruitment_status");
+
+            ProgressStatus progressStatus =
+                    progressStatusStr != null ? ProgressStatus.valueOf(progressStatusStr) : null;
+            RecruitmentStatus recruitmentStatus =
+                    recruitmentStatusStr != null ? RecruitmentStatus.valueOf(recruitmentStatusStr) : null;
+
             return new Session(
                     sessionId,
                     rs.getLong("course_id"),
@@ -135,8 +143,8 @@ public class JdbcSessionRepository implements SessionRepository {
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
                     SessionStatus.valueOf(rs.getString("status")),
-                    null,
-                    null,
+                    progressStatus,
+                    recruitmentStatus,
                     policy,
                     enrollments);
         };
