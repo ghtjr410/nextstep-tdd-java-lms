@@ -1,17 +1,17 @@
 package nextstep.courses.domain.session;
 
-public enum SessionStatus {
+public enum ProgressStatus {
     PREPARING("준비중"),
-    RECRUITING("모집중"),
+    IN_PROGRESS("진행중"),
     CLOSED("종료");
-
-    SessionStatus(String description) {
-        this.description = description;
-    }
 
     private final String description;
 
+    ProgressStatus(String description) {
+        this.description = description;
+    }
+
     public boolean canEnroll() {
-        return this == RECRUITING;
+        return this != CLOSED;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import nextstep.courses.domain.session.*;
 import nextstep.courses.domain.session.image.CoverImage;
+import nextstep.courses.domain.session.image.CoverImages;
 import nextstep.courses.domain.session.policy.EnrollmentPolicy;
 import nextstep.courses.domain.session.policy.FreeEnrollmentPolicy;
 import nextstep.courses.domain.session.policy.PaidEnrollmentPolicy;
@@ -30,8 +31,10 @@ public class JdbcSessionRepository implements SessionRepository {
     public Long save(Session session) {
         Long sessionId = insertSession(session);
 
-        if (session.getCoverImage() != null) {
-            insertCoverImage(session.getCoverImage(), sessionId);
+        if (session.getCoverImages() != null) {
+            for (CoverImage coverImage : session.getCoverImages().getValues()) {
+                insertCoverImage(coverImage, sessionId);
+            }
         }
 
         return sessionId;
@@ -51,7 +54,7 @@ public class JdbcSessionRepository implements SessionRepository {
         }
 
         String sql =
-                "insert into session (course_id, session_type, status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?)";
+                "insert into session (course_id, session_type, progress_status, recruitment_status, start_date, end_date, max_enrollment, price, created_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
@@ -59,12 +62,13 @@ public class JdbcSessionRepository implements SessionRepository {
                     PreparedStatement ps = connection.prepareStatement(sql, new String[] {"id"});
                     ps.setLong(1, session.getCourseId());
                     ps.setString(2, session.getType().name());
-                    ps.setString(3, session.getStatus().name());
-                    ps.setDate(4, Date.valueOf(session.getStartDate()));
-                    ps.setDate(5, Date.valueOf(session.getEndDate()));
-                    ps.setObject(6, maxEnrollment);
-                    ps.setObject(7, price);
-                    ps.setTimestamp(8, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setString(3, session.getProgressStatus().name());
+                    ps.setString(4, session.getRecruitmentStatus().name());
+                    ps.setDate(5, Date.valueOf(session.getStartDate()));
+                    ps.setDate(6, Date.valueOf(session.getEndDate()));
+                    ps.setObject(7, maxEnrollment);
+                    ps.setObject(8, price);
+                    ps.setTimestamp(9, Timestamp.valueOf(LocalDateTime.now()));
                     return ps;
                 },
                 keyHolder);
@@ -88,12 +92,19 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public void saveEnrollment(Enrollment enrollment) {
-        String sql = "insert into enrollment (session_id, student_id, created_at) values (?, ?, ?)";
+        String sql = "insert into enrollment (session_id, student_id, status, created_at) values (?, ?, ?, ?)";
         jdbcTemplate.update(
                 sql,
                 enrollment.getSessionId(),
                 enrollment.getStudentId(),
+                enrollment.getStatus().name(),
                 Timestamp.valueOf(enrollment.getCreatedAt()));
+    }
+
+    @Override
+    public void updateEnrollment(Enrollment enrollment) {
+        String sql = "update enrollment set status = ? where session_id = ? and student_id = ?";
+        jdbcTemplate.update(sql, enrollment.getStatus().name(), enrollment.getSessionId(), enrollment.getStudentId());
     }
 
     @Override
@@ -114,17 +125,18 @@ public class JdbcSessionRepository implements SessionRepository {
             Long sessionId = rs.getLong("id");
             String type = rs.getString("session_type");
             EnrollmentPolicy policy = createPolicy(type, rs.getInt("max_enrollment"), rs.getInt("price"));
-            CoverImage coverImage = findCoverImageBySessionId(sessionId);
+            CoverImages coverImages = findCoverImageBySessionId(sessionId);
             Enrollments enrollments = findEnrollmentsBySessionId(sessionId);
 
             return new Session(
                     sessionId,
                     rs.getLong("course_id"),
-                    coverImage,
+                    coverImages,
                     new SessionPeriod(
                             rs.getDate("start_date").toLocalDate(),
                             rs.getDate("end_date").toLocalDate()),
-                    SessionStatus.valueOf(rs.getString("status")),
+                    ProgressStatus.valueOf(rs.getString("progress_status")),
+                    RecruitmentStatus.valueOf(rs.getString("recruitment_status")),
                     policy,
                     enrollments);
         };
@@ -137,7 +149,7 @@ public class JdbcSessionRepository implements SessionRepository {
         return new FreeEnrollmentPolicy();
     }
 
-    private CoverImage findCoverImageBySessionId(Long sessionId) {
+    private CoverImages findCoverImageBySessionId(Long sessionId) {
         String sql = "select * from cover_image where session_id = ?";
         List<CoverImage> images = jdbcTemplate.query(
                 sql,
@@ -145,7 +157,11 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getString("filename"), rs.getLong("file_size"), rs.getInt("width"), rs.getInt("height")),
                 sessionId);
 
-        return images.stream().findFirst().orElse(null);
+        if (images.isEmpty()) {
+            return null;
+        }
+
+        return new CoverImages(images);
     }
 
     private Enrollments findEnrollmentsBySessionId(Long sessionId) {
@@ -156,6 +172,7 @@ public class JdbcSessionRepository implements SessionRepository {
                         rs.getLong("id"),
                         rs.getLong("session_id"),
                         rs.getLong("student_id"),
+                        EnrollmentStatus.valueOf(rs.getString("status")),
                         rs.getTimestamp("created_at").toLocalDateTime()),
                 sessionId);
 

@@ -102,12 +102,3 @@
 #### Capacity (VO)
 - [x] 최대 인원 검증 (1명 이상)
 - [x] 초과 여부 확인
-
-#### SessionRepository
-- [x] Session 저장
-- [x] Session 조회
-- [x] courseId로 Session 목록 조회
-- [x] Enrollment 저장
-
-#### SessionService
-- [x] 수강 신청
